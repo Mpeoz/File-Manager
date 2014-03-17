@@ -8,7 +8,7 @@ package dao;
 
 /**
  *
- * @author Enlightened
+ * @author PTsilopoulos
  */
 public class placeholderDao {
     

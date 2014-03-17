@@ -8,7 +8,7 @@ package ui;
 
 /**
  *
- * @author Enlightened
+ * @author PTsilopoulos
  */
 public class mainWindow extends javax.swing.JFrame {
 
