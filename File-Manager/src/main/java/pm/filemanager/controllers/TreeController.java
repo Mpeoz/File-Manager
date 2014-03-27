@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package dao;
+package pm.filemanager.controllers;
 
 /**
  *
  * @author PTsilopoulos
  */
-public class placeholderDao {
+public class TreeController {
     
 }

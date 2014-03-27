@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package controllers;
+package pm.filemanager.actions;
 
 /**
  *
- * @author PTsilopoulos
+ * @author Enlightened
  */
-public class placeholderController {
+public class ActionListener {
     
 }

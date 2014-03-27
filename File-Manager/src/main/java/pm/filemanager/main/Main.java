@@ -1,10 +1,10 @@
-package main;
+package pm.filemanager.main;
 
 /**
  * Hello world!
  *
  */
-public class App 
+public class Main 
 {
     public static void main( String[] args )
     {
