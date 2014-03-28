@@ -6,12 +6,19 @@
 
 package pm.filemanager.swing;
 
-import static java.awt.Event.UP;
-import java.net.URL;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JToolBar;
-import static javax.swing.SwingConstants.PREVIOUS;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import pm.filemanager.controllers.ClearTableController;
+import pm.filemanager.controllers.SetTreeModelController;
+import pm.filemanager.controllers.TableFileDetailsController;
+import pm.filemanager.controllers.checkPathIfDirectoryController;
+import pm.filemanager.operations.CheckPathIfDirectoryOperation;
+import pm.filemanager.operations.ClearTableFao;
+import pm.filemanager.operations.SetTreeModelOperation;
+import pm.filemanager.operations.TableFileDetailsFao;
+import pm.filemanager.operations.CreateNewFolderOperation;
 
 /**
  *
@@ -24,6 +31,21 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        SetTreeModelController newSetTreeModelController = new SetTreeModelController();
+         
+        rootFileTree = newSetTreeModelController.SetTreeModelController(rootFileTree,"\\");
+        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+        
+        
+      
+         rootFileTree.addTreeSelectionListener(new TreeSelectionListener() {  
+  
+        public void valueChanged(TreeSelectionEvent e) { 
+            
+            filePathTextField.setText(rootFileTree.getSelectionPath().getLastPathComponent().toString());
+        
+     }});      
+      
     }
 
     /**
@@ -35,22 +57,20 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        SidePane = new javax.swing.JTree();
-        jScrollBar1 = new javax.swing.JScrollBar();
-        jScrollBar2 = new javax.swing.JScrollBar();
-        NavigationToolbar = new javax.swing.JToolBar();
-        ContentPane = new javax.swing.JPanel();
-        jScrollBar3 = new javax.swing.JScrollBar();
         StatusBar = new javax.swing.JLabel();
         BackButton = new javax.swing.JButton();
         NextButton = new javax.swing.JButton();
         UpButton = new javax.swing.JButton();
         RefreshButton = new javax.swing.JButton();
         HomeDirButton = new javax.swing.JButton();
+        rootFileTreeScrollPane = new javax.swing.JScrollPane();
+        rootFileTree = new javax.swing.JTree();
+        rootFileTableScrollPane = new javax.swing.JScrollPane();
+        fileDetailsTable = new javax.swing.JTable();
+        filePathTextField = new javax.swing.JTextField();
         MenuBar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        CurrentFolderMenuItem = new javax.swing.JMenuItem();
+        createFolderMenuItem = new javax.swing.JMenuItem();
         CreateDocumentMenuItem = new javax.swing.JMenuItem();
         PropertiesMenuItem = new javax.swing.JMenuItem();
         CloseMenuItem = new javax.swing.JMenuItem();
@@ -65,56 +85,50 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollBar2.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-
-        NavigationToolbar.setRollover(true);
-
-        ContentPane.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ContentPaneMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout ContentPaneLayout = new javax.swing.GroupLayout(ContentPane);
-        ContentPane.setLayout(ContentPaneLayout);
-        ContentPaneLayout.setHorizontalGroup(
-            ContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        ContentPaneLayout.setVerticalGroup(
-            ContentPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
         StatusBar.setText("Status");
         StatusBar.setName("Status"); // NOI18N
 
-        BackButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pm/filemanager/images/BackIcon.png"))); // NOI18N
         BackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackButtonActionPerformed(evt);
             }
         });
 
-        NextButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pm/filemanager/images/NextIcon.png"))); // NOI18N
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        rootFileTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        rootFileTree.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rootFileTreeMouseClicked(evt);
+            }
+        });
+        rootFileTree.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                rootFileTreeKeyPressed(evt);
+            }
+        });
+        rootFileTreeScrollPane.setViewportView(rootFileTree);
 
-        UpButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pm/filemanager/images/UpIcon.png"))); // NOI18N
+        fileDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        RefreshButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pm/filemanager/images/RefreshIcon.png"))); // NOI18N
-
-        HomeDirButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pm/filemanager/images/HomeIcon.png"))); // NOI18N
+            },
+            new String [] {
+                "Name", "Date modified", "Type", "Size"
+            }
+        ));
+        rootFileTableScrollPane.setViewportView(fileDetailsTable);
 
         jMenu1.setText("File");
 
-        CurrentFolderMenuItem.setText("Create Folder");
-        CurrentFolderMenuItem.setName("CreateFolder"); // NOI18N
-        CurrentFolderMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        createFolderMenuItem.setText("Create Folder");
+        createFolderMenuItem.setName("CreateFolder"); // NOI18N
+        createFolderMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CurrentFolderMenuItemActionPerformed(evt);
+                createFolderMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(CurrentFolderMenuItem);
-        CurrentFolderMenuItem.getAccessibleContext().setAccessibleParent(CurrentFolderMenuItem);
+        jMenu1.add(createFolderMenuItem);
+        createFolderMenuItem.getAccessibleContext().setAccessibleParent(createFolderMenuItem);
 
         CreateDocumentMenuItem.setText("Create Document");
         jMenu1.add(CreateDocumentMenuItem);
@@ -176,65 +190,49 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(StatusBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(13, 13, 13)
-                                .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(NextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(UpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(RefreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(HomeDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ContentPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(NavigationToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(rootFileTreeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(rootFileTableScrollPane)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(13, 13, 13)
+                .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(NextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(UpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(RefreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(HomeDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(NavigationToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(BackButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(NextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(UpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(RefreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(HomeDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(HomeDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(BackButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollBar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(11, 11, 11))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(ContentPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
-                            .addComponent(jScrollBar1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addComponent(jScrollBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rootFileTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
+                    .addComponent(rootFileTreeScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(StatusBar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        statusbar.setBorder(BorderFactory.createEtchedBorder(
-            EtchedBorder.RAISED));
+        //statusbar.setBorder(BorderFactory.createEtchedBorder(
+            // EtchedBorder.RAISED));
 
     pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -247,10 +245,29 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_PasteMenuItemActionPerformed
 
-    private void CurrentFolderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CurrentFolderMenuItemActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_CurrentFolderMenuItemActionPerformed
+    private void createFolderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderMenuItemActionPerformed
+          checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
+       boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(filePathTextField.getText().toString());
+       
+       if(ifDirectory){
+            String pathForCreateFolder= filePathTextField.getText().toString()+"\\";
+      CreateNewFolderOperation createFolder = new CreateNewFolderOperation();
+       boolean success =createFolder.createNewFolderOperation(pathForCreateFolder);
+        if (success) {
+           System.out.println("success");
+        }
+        else{
+            System.out.println("faild");
+        }
+           
+       }
+       else{
+           System.out.println("You must select directory to make a new folder");
+       }
+      
+           
+
+    }//GEN-LAST:event_createFolderMenuItemActionPerformed
 
     private void CutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutMenuItemActionPerformed
         // TODO add your handling code here:
@@ -261,9 +278,36 @@ public class MainWindow extends javax.swing.JFrame {
        
     }//GEN-LAST:event_BackButtonActionPerformed
 
-    private void ContentPaneMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ContentPaneMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ContentPaneMouseClicked
+    private void rootFileTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rootFileTreeMouseClicked
+
+        
+        TableFileDetailsController newTableFileDetailsController = new TableFileDetailsController();
+        //clear table
+        
+
+        ClearTableController clearTable = new ClearTableController();
+        boolean isClear = clearTable.ClearTable(fileDetailsTable);
+
+        //if is clear add new selected path
+        if(isClear){
+            //check if show all file details
+            try{
+           newTableFileDetailsController.TableFileDetailsController(fileDetailsTable,filePathTextField.getText().toString());
+            }
+            catch(Exception e){
+                try {
+                    throw e;
+                } catch (Exception ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+    }//GEN-LAST:event_rootFileTreeMouseClicked
+
+    private void rootFileTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rootFileTreeKeyPressed
+
+    }//GEN-LAST:event_rootFileTreeKeyPressed
 
     /**
      * @param args the command line arguments
@@ -303,30 +347,28 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;
     private javax.swing.JMenuItem CloseMenuItem;
-    private javax.swing.JPanel ContentPane;
     private javax.swing.JMenu ContentsMenuItem;
     private javax.swing.JMenuItem CopyMenuItem;
     private javax.swing.JMenuItem CreateDocumentMenuItem;
-    private javax.swing.JMenuItem CurrentFolderMenuItem;
     private javax.swing.JMenuItem CutMenuItem;
     private javax.swing.JMenuItem DeleteMenuItem;
     private javax.swing.JButton HomeDirButton;
     private javax.swing.JMenuBar MenuBar;
-    private javax.swing.JToolBar NavigationToolbar;
     private javax.swing.JButton NextButton;
     private javax.swing.JMenuItem PasteMenuItem;
     private javax.swing.JMenuItem PropertiesMenuItem;
     private javax.swing.JButton RefreshButton;
     private javax.swing.JMenuItem RenameMenuItem;
-    private javax.swing.JTree SidePane;
     private javax.swing.JLabel StatusBar;
     private javax.swing.JButton UpButton;
+    private javax.swing.JMenuItem createFolderMenuItem;
+    private javax.swing.JTable fileDetailsTable;
+    private javax.swing.JTextField filePathTextField;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JScrollBar jScrollBar1;
-    private javax.swing.JScrollBar jScrollBar2;
-    private javax.swing.JScrollBar jScrollBar3;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane rootFileTableScrollPane;
+    private javax.swing.JTree rootFileTree;
+    private javax.swing.JScrollPane rootFileTreeScrollPane;
     // End of variables declaration//GEN-END:variables
 }
