@@ -5,9 +5,20 @@
  */
 package pm.filemanager.swing;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
+import javax.swing.JTree;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+import javax.swing.tree.TreePath;
 import pm.filemanager.controllers.ClearTableController;
 import pm.filemanager.controllers.JTreeValueChangedController;
 import pm.filemanager.controllers.SetTreeModelController;
@@ -16,6 +27,8 @@ import pm.filemanager.controllers.checkPathIfDirectoryController;
 import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
 import pm.filemanager.operations.CreateNewFileOperation;
 import pm.filemanager.operations.CreateNewFolderOperation;
+import pm.filemanager.operations.PathCopyToClipboardOperations;
+import pm.filemanager.operations.TreeDragAndDropOperations;
 
 /**
  *
@@ -36,12 +49,15 @@ public class MainWindow extends javax.swing.JFrame {
         JTreeValueChangedController newJTreeValueChangedController = new JTreeValueChangedController();
         newJTreeValueChangedController.valueChanged(rootFileTree, filePathTextField);
         
+        PathCopyToClipboardOperations newPathCopyToClipboardOperations = new PathCopyToClipboardOperations();
         
-        
-        //setDefaultCloseOperation
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-
+//        //drag and drop
+//        TreeDragAndDropOperations newTreeDragAndDropOperations = new TreeDragAndDropOperations();
+//        newTreeDragAndDropOperations.getContent(rootFileTree);
+//    //this.add(new TreeDragAndDropOperations().getContent());   
     }
+    
     /**
      * Add table details
      */
@@ -166,9 +182,17 @@ public class MainWindow extends javax.swing.JFrame {
         });
         rootFileTreeScrollPane.setViewportView(rootFileTree);
 
+        filePathTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filePathTextFieldActionPerformed(evt);
+            }
+        });
         filePathTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 filePathTextFieldKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                filePathTextFieldKeyTyped(evt);
             }
         });
 
@@ -455,8 +479,16 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuBarMouseClicked
 
     private void filePathTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyPressed
-   AddTableDetails();
+    AddTableDetails();
     }//GEN-LAST:event_filePathTextFieldKeyPressed
+
+    private void filePathTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePathTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filePathTextFieldActionPerformed
+
+    private void filePathTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyTyped
+     AddTableDetails();
+    }//GEN-LAST:event_filePathTextFieldKeyTyped
 
     /**
      * @param args the command line arguments
@@ -504,7 +536,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem RenameMenuItem;
     private javax.swing.JLabel StatusBar;
     private javax.swing.JButton UpButton;
-    private javax.swing.JButton backButton;
+    public javax.swing.JButton backButton;
     private javax.swing.JMenuItem closeMenuItem;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenu createDocumentMenu;
