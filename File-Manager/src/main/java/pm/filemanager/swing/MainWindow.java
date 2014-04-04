@@ -5,20 +5,8 @@
  */
 package pm.filemanager.swing;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
-import javax.swing.tree.TreePath;
 import pm.filemanager.controllers.ClearTableController;
 import pm.filemanager.controllers.JTreeValueChangedController;
 import pm.filemanager.controllers.SetTreeModelController;
@@ -28,7 +16,6 @@ import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
 import pm.filemanager.operations.CreateNewFileOperation;
 import pm.filemanager.operations.CreateNewFolderOperation;
 import pm.filemanager.operations.PathCopyToClipboardOperations;
-import pm.filemanager.operations.TreeDragAndDropOperations;
 
 /**
  *
@@ -429,7 +416,7 @@ public class MainWindow extends javax.swing.JFrame {
             System.out.println("You must select directory to make a new text file");
 
         }
-
+        AddTableDetails();
     }//GEN-LAST:event_createTextDocumentMenuItemActionPerformed
 
     private void PropertiesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PropertiesMenuItemActionPerformed
