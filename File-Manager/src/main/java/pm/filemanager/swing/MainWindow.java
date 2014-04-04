@@ -7,6 +7,7 @@ package pm.filemanager.swing;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import pm.filemanager.controllers.ClearTableController;
 import pm.filemanager.controllers.JTreeValueChangedController;
 import pm.filemanager.controllers.SetTreeModelController;
@@ -39,6 +40,8 @@ public class MainWindow extends javax.swing.JFrame {
         PathCopyToClipboardOperations newPathCopyToClipboardOperations = new PathCopyToClipboardOperations();
         
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+       
+       
 //        //drag and drop
 //        TreeDragAndDropOperations newTreeDragAndDropOperations = new TreeDragAndDropOperations();
 //        newTreeDragAndDropOperations.getContent(rootFileTree);
