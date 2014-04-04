@@ -13,11 +13,17 @@ import pm.filemanager.operations.TableFileDetailsFao;
  *
  * @author user
  */
-public class TableFileDetailsController {
+public class setTableFileDetailsController {
+    /**
+     * public boolean setTableFileDetailsController
+     * @param table
+     * @param path
+     * @return true if is set or nots
+     */
     
-    public boolean TableFileDetailsController(JTable table, String path){
+    public boolean setTableFileDetailsController(JTable table, String path){
         TableFileDetailsFao newTableFileDetailsFao = new TableFileDetailsFao();
-        boolean result=newTableFileDetailsFao.TableFileDetailsFao(table, path);
+        boolean result=newTableFileDetailsFao.setTableFileDetailsFao(table, path);
     return result;
     }
 }

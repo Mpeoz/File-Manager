@@ -13,6 +13,11 @@ import javax.swing.event.TreeSelectionEvent;
  * @author alex
  */
 public class FixTreeSelectionStringtoCorrectedPathValidator {
+    /**
+     * public String function FixTreeSelectionStringToCorrectedPath
+     * @param e TreeSelectionEvent
+     * @return a Fixed String with Corrected Path
+     */
     public String FixTreeSelectionStringToCorrectedPath(TreeSelectionEvent e){
           //remove [Computer, from string
             String pathForNode = e.getPath().toString().replaceAll("^\\[Computer,", "");
@@ -26,6 +31,7 @@ public class FixTreeSelectionStringtoCorrectedPathValidator {
             pathForNode=pathForNode.replaceAll("]","");
             //add \ to end of path
             pathForNode=pathForNode.replaceAll("$","\\\\");
+            //return a fixed path String..
             return pathForNode;
     }
     

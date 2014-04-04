@@ -5,32 +5,31 @@
  */
 package pm.filemanager.validators;
 
-import java.io.File;
 import javax.swing.JTextField;
-import pm.filemanager.controllers.checkPathIfDirectoryController;
 
 /**
  *
  * @author alex
  */
 public class StringIfEndsWithSeparatorValidator {
-
-    public String checkIfStringEndWithSeparator( JTextField filePathTextField) {
+/**
+ * public String checkIfStringEndWithSeparator
+ * @param filePathTextField JTextField
+ * @return a String with Separator in end if exist or not
+ */
+    public String checkIfStringEndWithSeparator(JTextField filePathTextField) {
 
         String resultPathForCreateFolder;
-//        checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
-//        boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(filePathTextField.getText().toString());
-//
-//        if (ifDirectory) {
-            if (filePathTextField.getText().toString().endsWith("\\")) {
-                
-                resultPathForCreateFolder = filePathTextField.getText().toString();
 
-            } else {
-                resultPathForCreateFolder = filePathTextField.getText().toString() + "\\";
+        if (filePathTextField.getText().toString().endsWith("\\")) {
 
-            }
-//        }
+            resultPathForCreateFolder = filePathTextField.getText().toString();
+
+        } else {
+            resultPathForCreateFolder = filePathTextField.getText().toString() + "\\";
+
+        }
+
         return resultPathForCreateFolder;
     }
 }

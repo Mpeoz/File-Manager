@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import pm.filemanager.controllers.ClearTableController;
 import pm.filemanager.controllers.JTreeValueChangedController;
 import pm.filemanager.controllers.SetTreeModelController;
-import pm.filemanager.controllers.TableFileDetailsController;
+import pm.filemanager.controllers.setTableFileDetailsController;
 import pm.filemanager.controllers.checkPathIfDirectoryController;
 import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
 import pm.filemanager.operations.CreateNewFileOperation;
@@ -46,11 +46,12 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     /**
+     * 
      * Add table details
      */
-    private void AddTableDetails(){
+    private void ClearTableAddTableDetails(){
         
-        TableFileDetailsController newTableFileDetailsController = new TableFileDetailsController();
+        setTableFileDetailsController newTableFileDetailsController = new setTableFileDetailsController();
         //clear table
         ClearTableController clearTable = new ClearTableController();
         boolean isClear = clearTable.ClearTable(fileDetailsTable);
@@ -59,7 +60,7 @@ public class MainWindow extends javax.swing.JFrame {
         if (isClear) {
             //check if show all file details
             try {
-                newTableFileDetailsController.TableFileDetailsController(fileDetailsTable, filePathTextField.getText().toString());
+                newTableFileDetailsController.setTableFileDetailsController(fileDetailsTable, filePathTextField.getText().toString());
             } catch (Exception e) {
                 try {
                     throw e;
@@ -339,7 +340,10 @@ public class MainWindow extends javax.swing.JFrame {
 
     pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * private void closeMenuItemActionPerformed
+ * @param evt 
+ */
     private void closeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeMenuItemActionPerformed
         this.dispose();
     }//GEN-LAST:event_closeMenuItemActionPerformed
@@ -352,16 +356,15 @@ public class MainWindow extends javax.swing.JFrame {
  * @param evt 
  */
     private void createFolderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderMenuItemActionPerformed
-   //TODO: refactor     
+    
         checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
         boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(filePathTextField.getText().toString());
-        
-        String pathForCreateFolder;
-        //check if is a Directory
+            //TODO: refactor         
+              //check if is a Directory
         if (ifDirectory) {
             //check if file and with / or not
             stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
-            pathForCreateFolder = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField);
+           String pathForCreateFolder = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField);
             //Create a new Folder..
             CreateNewFolderOperation createFolder = new CreateNewFolderOperation();
             createFolder.createNewFolderOperation(pathForCreateFolder, 1);
@@ -370,9 +373,9 @@ public class MainWindow extends javax.swing.JFrame {
             System.out.println("You must select directory to make a new folder");
 
         }
-        // add new table details with new folder 
-       AddTableDetails();
-//           
+        // add new table details  
+       ClearTableAddTableDetails();
+
 
     }//GEN-LAST:event_createFolderMenuItemActionPerformed
 
@@ -386,8 +389,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void rootFileTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rootFileTreeMouseClicked
-         AddTableDetails();
-       
+         ClearTableAddTableDetails();
     }//GEN-LAST:event_rootFileTreeMouseClicked
 
     private void rootFileTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rootFileTreeKeyPressed
@@ -416,40 +418,25 @@ public class MainWindow extends javax.swing.JFrame {
             System.out.println("You must select directory to make a new text file");
 
         }
-        AddTableDetails();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_createTextDocumentMenuItemActionPerformed
 
     private void PropertiesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PropertiesMenuItemActionPerformed
          
        
     }//GEN-LAST:event_PropertiesMenuItemActionPerformed
-/**\
+/**
  * private void function homeDirButton
  * @param evt 
  * 
  */
     private void homeDirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeDirButtonActionPerformed
+
         SetTreeModelController newSetTreeModelController = new SetTreeModelController();
         rootFileTree = newSetTreeModelController.SetTreeModelController(rootFileTree);
-         TableFileDetailsController newTableFileDetailsController = new TableFileDetailsController();
-         filePathTextField.setText("C:\\");
-        //clear table
-        ClearTableController clearTable = new ClearTableController();
-        boolean isClear = clearTable.ClearTable(fileDetailsTable);
-
-        //if is clear add new selected path
-        if (isClear) {
-            //check if show all file details
-            try {
-                newTableFileDetailsController.TableFileDetailsController(fileDetailsTable, filePathTextField.getText().toString());
-            } catch (Exception e) {
-                try {
-                    throw e;
-                } catch (Exception ex) {
-                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+        //set Home Directory to filepathTextField 
+        filePathTextField.setText("C:\\");
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_homeDirButtonActionPerformed
 
     private void fileDetailsTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fileDetailsTableKeyReleased
@@ -466,7 +453,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuBarMouseClicked
 
     private void filePathTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyPressed
-    AddTableDetails();
+    ClearTableAddTableDetails();
     }//GEN-LAST:event_filePathTextFieldKeyPressed
 
     private void filePathTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePathTextFieldActionPerformed
@@ -474,7 +461,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_filePathTextFieldActionPerformed
 
     private void filePathTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyTyped
-     AddTableDetails();
+     ClearTableAddTableDetails();
     }//GEN-LAST:event_filePathTextFieldKeyTyped
 
     /**

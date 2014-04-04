@@ -15,14 +15,8 @@ import javax.swing.JTable;
  * @author nova
  */
 public class RenameAFileOperaion {
-    
-    public boolean  RenameAFile(String path,String NameOfFile,JTable jTable,JPopupMenu jPopupMenu){
-//        File file = new File(path);
-//        if(file2.exists()) throw new java.io.IOException("file exists");
-//        try{
-//            file.renameTo();
-//        }
-          
+//TODO: insertCode for name and take all name into a stack for undo .    
+    public boolean  RenameAFile(String path,String NameOfFile){
         
         return false;
         

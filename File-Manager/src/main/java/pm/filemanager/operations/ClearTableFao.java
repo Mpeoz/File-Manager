@@ -14,6 +14,11 @@ import javax.swing.table.DefaultTableModel;
  * @author alex
  */
 public class ClearTableFao {
+    /**
+     * public boolean function ClearTable
+     * @param table
+     * @return true if is clear and  false if is not
+     */
     public boolean ClearTable(JTable table){
         
         DefaultTableModel model = (DefaultTableModel) table.getModel();

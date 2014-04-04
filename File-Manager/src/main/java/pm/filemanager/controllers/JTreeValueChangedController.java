@@ -15,7 +15,11 @@ import pm.filemanager.actions.JTreeValueChangedListener;
  * @author alex
  */
 public class JTreeValueChangedController {
-    
+    /**
+     * public void JTree value Changed listener
+     * @param rootFileTree
+     * @param filePathTextField 
+     */
      public void valueChanged(final JTree rootFileTree , final JTextField  filePathTextField){
          JTreeValueChangedListener newJTreeValueChangedListener = new JTreeValueChangedListener();
          newJTreeValueChangedListener.valueChanged(rootFileTree, filePathTextField);

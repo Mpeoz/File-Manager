@@ -13,8 +13,9 @@ import javax.swing.event.TreeSelectionListener;
 import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
 
 /**
- *
+ * public void value Changed addTreeSelectionListener
  * @author alex
+ * set clipboard the real path 
  */
 public class JTreeValueChangedListener {
     

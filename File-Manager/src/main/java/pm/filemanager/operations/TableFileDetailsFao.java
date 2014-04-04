@@ -17,8 +17,14 @@ import pm.filemanager.model.FileNameModel;
  * @author alex
  */
 public class TableFileDetailsFao {
-
-    public boolean TableFileDetailsFao(JTable table, String path) {
+/**
+ * public boolean setTableFileDetailsFao
+ * @param table JTable
+ * @param path String
+ * @return true if details is set or false if is not
+ */
+    
+    public boolean setTableFileDetailsFao(JTable table, String path) {
 
         File folder = new File(path);
        boolean success = false;

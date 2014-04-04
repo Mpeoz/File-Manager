@@ -14,7 +14,11 @@ import pm.filemanager.operations.ClearTableFao;
  * @author user
  */
 public class ClearTableController {
-    
+    /**
+     * public boolean function clearTable
+     * @param table
+     * @return true if is clear or false if is not
+     */
     public boolean ClearTable(JTable table){
         ClearTableFao newClearTableFao = new ClearTableFao();
         boolean resultClearTable = newClearTableFao.ClearTable(table);

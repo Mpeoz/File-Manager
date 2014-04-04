@@ -13,7 +13,11 @@ import pm.filemanager.operations.CheckPathIfDirectoryOperation;
  * @author user
  */
 public class checkPathIfDirectoryController {
-    
+    /**
+     * public boolean function checkPathIfDirectory
+     * @param path
+     * @return true if is a directory and false if is not
+     */
     public boolean checkPathIfDirectory(String path){
         CheckPathIfDirectoryOperation checkPathIfDirectory = new CheckPathIfDirectoryOperation();
         Boolean checkResult=checkPathIfDirectory.checkPathIfDirectory(path);
