@@ -15,9 +15,9 @@ import pm.filemanager.operations.SetTreeModelOperation;
  */
 public class SetTreeModelController {
     
-     public JTree  SetTreeModelController(JTree tree,String path){
+     public JTree  SetTreeModelController(JTree tree){
          SetTreeModelOperation setTreeModel = new SetTreeModelOperation();
-         JTree resultTree =setTreeModel.SetTreeModel(tree, path);
+         JTree resultTree =setTreeModel.SetTreeModel(tree);
          return resultTree;
      }
     

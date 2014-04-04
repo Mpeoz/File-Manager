@@ -17,16 +17,13 @@ import pm.filemanager.model.FileTreeModel;
  * @author alex
  */
 public class SetTreeModelOperation {
-    public JTree  SetTreeModel(JTree tree,String path){   
-       
-    //FileSystemModel  fileSystemModel = new FileSystemModel(new File(path));
-   FileTreeModel  fileSystemModel = new FileTreeModel();
+    public JTree  SetTreeModel(JTree jTree){ 
+    FileTreeModel  fileSystemModel = new FileTreeModel();
      
-    tree.setModel(fileSystemModel);
-    tree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-    tree.setShowsRootHandles(true);
-    
-    return tree;
+    jTree.setModel(fileSystemModel);
+    jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+    jTree.setShowsRootHandles(true);
+    return jTree;
     
     
 }

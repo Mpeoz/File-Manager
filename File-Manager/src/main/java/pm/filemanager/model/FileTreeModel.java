@@ -34,7 +34,7 @@ public class FileTreeModel implements TreeModel {
                File tempFile = new File(root);  
                           
                // Root is going to start as a simple string  
-             root = "\\";  
+               root = "Computer";  
                listeners = new Vector();  
           }  
   
@@ -52,10 +52,11 @@ public class FileTreeModel implements TreeModel {
                else {  
                     // Otherwise process a branch as normal  
                     File directory = (File) parent;  
-                    String[] directoryMembers = directory.list();  
-                    return (new File(directory, directoryMembers[index]));
+                    String[] directoryMembers = directory.list(); 
+       
+                    //return (new File(directory, directoryMembers[index]));
+                    return new FileTreeModel.TreeFile(directory, directoryMembers[index]);
                     
-                    //return new FileTreeModel.TreeFile(directory, directoryMembers[index]);
                     
                     
                }  
@@ -71,16 +72,16 @@ public class FileTreeModel implements TreeModel {
                     File fileSystemMember = (File) parent;  
                     if (fileSystemMember.isDirectory()) {  
                          String[] directoryMembers = fileSystemMember.list(); 
-                        //HACK :PROBLEM WITH SOME FOLDERS 
-//                         if(!(directoryMembers.length==0)){
-//                         return directoryMembers.length;    
-//                         }
-//                         else{
-//                            return 0;
-//                          
-//                         }
-     
-                    if (fileSystemMember != null)
+                       // HACK :PROBLEM WITH SOME FOLDERS 
+                         if(!(directoryMembers.length==0)){
+                         return directoryMembers.length;    
+                         }
+                         else{
+                            return 0;
+                          
+                         }
+                    }
+                    if (fileSystemMember != null){
                       return fileSystemMember.list().length;
     
     
@@ -88,7 +89,8 @@ public class FileTreeModel implements TreeModel {
                     }  
   
                   return 0;
-               }  
+               }
+          
               
           }  
   
@@ -118,18 +120,7 @@ public class FileTreeModel implements TreeModel {
                }  
                return result;  
           }  
-//  public int getIndexOfChild(Object parent, Object child) {
-//    File directory = (File) parent;
-//    File file = (File) child;
-//    String[] children = directory.list();
-//    for (int i = 0; i < children.length; i++) {
-//      if (file.getName().equals(children[i])) {
-//        return i;
-//      }
-//    }
-//    return -1;
-//
-//  }
+
           public boolean isLeaf(Object node) {  
                // One last time checking if it is our root string node  
                if (node instanceof String) { 
@@ -141,10 +132,7 @@ public class FileTreeModel implements TreeModel {
           }  
           
           
-// public boolean isLeaf(Object node) {
-//    File file = (File) node;
-//    return file.isFile();
-//  } 
+
           public void addTreeModelListener(TreeModelListener l) {  
             if (l != null && !listeners.contains(l)) {  
               listeners.addElement(l);  
@@ -157,22 +145,19 @@ public class FileTreeModel implements TreeModel {
             }  
           }  
   
-          public void valueForPathChanged(TreePath path, Object newValue) {  
-            // does nothing  
-          }  
-         
-//          public void valueForPathChanged(TreePath path, Object value) {
-//    File oldFile = (File) path.getLastPathComponent();
-//    String fileParentPath = oldFile.getParent();
-//    String newFileName = (String) value;
-//    File targetFile = new File(fileParentPath, newFileName);
-//    oldFile.renameTo(targetFile);
-//    File parent = new File(fileParentPath);
-//    int[] changedChildrenIndices = { getIndexOfChild(parent, targetFile) };
-//    Object[] changedChildren = { targetFile };
-//    fireTreeNodesChanged(path.getParentPath(), changedChildrenIndices, changedChildren);
-//
-//  }
+
+          public void valueForPathChanged(TreePath path, Object value) {
+        File oldFile = (File) path.getLastPathComponent();
+        String fileParentPath = oldFile.getParent();
+        String newFileName = (String) value;
+        File targetFile = new File(fileParentPath, newFileName);
+        oldFile.renameTo(targetFile);
+        File parent = new File(fileParentPath);
+        int[] changedChildrenIndices = { getIndexOfChild(parent, targetFile) };
+        Object[] changedChildren = { targetFile };
+        fireTreeNodesChanged(path.getParentPath(), changedChildrenIndices, changedChildren);
+
+      }
   
           public void fireTreeNodesInserted(TreeModelEvent e) {  
             Enumeration listenerCount = listeners.elements();  
@@ -223,14 +208,7 @@ public class FileTreeModel implements TreeModel {
           }  
           }
   
-//          public void fireTreeStructureChanged(TreeModelEvent e) {  
-//            Enumeration listenerCount = listeners.elements();  
-//            while (listenerCount.hasMoreElements()) {  
-//              TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
-//              listener.treeStructureChanged(e);  
-//            }  
-//          }
-//          
+         
       private void fireTreeNodesChanged(TreePath parentPath, int[] indices, Object[] children) {
     TreeModelEvent event = new TreeModelEvent(this, parentPath, indices, children);
     Iterator iterator = listeners.iterator();
@@ -243,7 +221,7 @@ public class FileTreeModel implements TreeModel {
 
  
 
-  private class TreeFile extends File {
+ private class TreeFile extends File {
     public TreeFile(File parent, String child) {
       super(parent, child);
     }

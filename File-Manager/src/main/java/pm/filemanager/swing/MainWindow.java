@@ -3,21 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pm.filemanager.swing;
 
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import pm.filemanager.controllers.ClearTableController;
+import pm.filemanager.controllers.JTreeValueChangedController;
 import pm.filemanager.controllers.SetTreeModelController;
 import pm.filemanager.controllers.TableFileDetailsController;
 import pm.filemanager.controllers.checkPathIfDirectoryController;
-import pm.filemanager.operations.CheckPathIfDirectoryOperation;
-import pm.filemanager.operations.ClearTableFao;
-import pm.filemanager.operations.SetTreeModelOperation;
-import pm.filemanager.operations.TableFileDetailsFao;
+import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
+import pm.filemanager.operations.CreateNewFileOperation;
 import pm.filemanager.operations.CreateNewFolderOperation;
 
 /**
@@ -31,21 +28,43 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        //set tree model
         SetTreeModelController newSetTreeModelController = new SetTreeModelController();
-         
-        rootFileTree = newSetTreeModelController.SetTreeModelController(rootFileTree,"\\");
+        rootFileTree = newSetTreeModelController.SetTreeModelController(rootFileTree);
+        
+        //add listener
+        JTreeValueChangedController newJTreeValueChangedController = new JTreeValueChangedController();
+        newJTreeValueChangedController.valueChanged(rootFileTree, filePathTextField);
+        
+        
+        
+        //setDefaultCloseOperation
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+
+    }
+    /**
+     * Add table details
+     */
+    private void AddTableDetails(){
         
-        
-      
-         rootFileTree.addTreeSelectionListener(new TreeSelectionListener() {  
-  
-        public void valueChanged(TreeSelectionEvent e) { 
-            
-            filePathTextField.setText(rootFileTree.getSelectionPath().getLastPathComponent().toString());
-        
-     }});      
-      
+        TableFileDetailsController newTableFileDetailsController = new TableFileDetailsController();
+        //clear table
+        ClearTableController clearTable = new ClearTableController();
+        boolean isClear = clearTable.ClearTable(fileDetailsTable);
+
+        //if is clear add new selected path
+        if (isClear) {
+            //check if show all file details
+            try {
+                newTableFileDetailsController.TableFileDetailsController(fileDetailsTable, filePathTextField.getText().toString());
+            } catch (Exception e) {
+                try {
+                    throw e;
+                } catch (Exception ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
 
     /**
@@ -57,40 +76,79 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        tablePopupMenu = new javax.swing.JPopupMenu();
+        cutMenuItem = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         StatusBar = new javax.swing.JLabel();
-        BackButton = new javax.swing.JButton();
-        NextButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
+        nextButton = new javax.swing.JButton();
         UpButton = new javax.swing.JButton();
         RefreshButton = new javax.swing.JButton();
-        HomeDirButton = new javax.swing.JButton();
+        homeDirButton = new javax.swing.JButton();
         rootFileTreeScrollPane = new javax.swing.JScrollPane();
         rootFileTree = new javax.swing.JTree();
+        filePathTextField = new javax.swing.JTextField();
         rootFileTableScrollPane = new javax.swing.JScrollPane();
         fileDetailsTable = new javax.swing.JTable();
-        filePathTextField = new javax.swing.JTextField();
         MenuBar = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        propertiesMenu = new javax.swing.JMenu();
         createFolderMenuItem = new javax.swing.JMenuItem();
-        CreateDocumentMenuItem = new javax.swing.JMenuItem();
+        createDocumentMenu = new javax.swing.JMenu();
+        createTextDocumentMenuItem = new javax.swing.JMenuItem();
         PropertiesMenuItem = new javax.swing.JMenuItem();
-        CloseMenuItem = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        closeMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        editMenu = new javax.swing.JMenu();
         CutMenuItem = new javax.swing.JMenuItem();
         CopyMenuItem = new javax.swing.JMenuItem();
         PasteMenuItem = new javax.swing.JMenuItem();
         DeleteMenuItem = new javax.swing.JMenuItem();
         RenameMenuItem = new javax.swing.JMenuItem();
-        ContentsMenuItem = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
+        helpMenuItem = new javax.swing.JMenu();
+        contentsMenuItem = new javax.swing.JMenuItem();
+
+        cutMenuItem.setText("jMenuItem1");
+        tablePopupMenu.add(cutMenuItem);
+
+        jMenuItem2.setText("jMenuItem2");
+        tablePopupMenu.add(jMenuItem2);
+
+        jMenuItem3.setText("jMenuItem3");
+        tablePopupMenu.add(jMenuItem3);
+
+        jMenuItem4.setText("jMenuItem4");
+        tablePopupMenu.add(jMenuItem4);
+
+        jMenuItem5.setText("jMenuItem5");
+        tablePopupMenu.add(jMenuItem5);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
 
         StatusBar.setText("Status");
         StatusBar.setName("Status"); // NOI18N
 
-        BackButton.addActionListener(new java.awt.event.ActionListener() {
+        backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackButtonActionPerformed(evt);
+                backButtonActionPerformed(evt);
+            }
+        });
+
+        homeDirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                homeDirButtonActionPerformed(evt);
             }
         });
 
@@ -108,6 +166,12 @@ public class MainWindow extends javax.swing.JFrame {
         });
         rootFileTreeScrollPane.setViewportView(rootFileTree);
 
+        filePathTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                filePathTextFieldKeyPressed(evt);
+            }
+        });
+
         fileDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -116,9 +180,20 @@ public class MainWindow extends javax.swing.JFrame {
                 "Name", "Date modified", "Type", "Size"
             }
         ));
+        fileDetailsTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fileDetailsTableKeyReleased(evt);
+            }
+        });
         rootFileTableScrollPane.setViewportView(fileDetailsTable);
 
-        jMenu1.setText("File");
+        MenuBar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                MenuBarMouseClicked(evt);
+            }
+        });
+
+        propertiesMenu.setText("File");
 
         createFolderMenuItem.setText("Create Folder");
         createFolderMenuItem.setName("CreateFolder"); // NOI18N
@@ -127,26 +202,41 @@ public class MainWindow extends javax.swing.JFrame {
                 createFolderMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(createFolderMenuItem);
+        propertiesMenu.add(createFolderMenuItem);
         createFolderMenuItem.getAccessibleContext().setAccessibleParent(createFolderMenuItem);
 
-        CreateDocumentMenuItem.setText("Create Document");
-        jMenu1.add(CreateDocumentMenuItem);
+        createDocumentMenu.setText("Create Document");
 
-        PropertiesMenuItem.setText("Properties");
-        jMenu1.add(PropertiesMenuItem);
-
-        CloseMenuItem.setText("Close");
-        CloseMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        createTextDocumentMenuItem.setText("text document");
+        createTextDocumentMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CloseMenuItemActionPerformed(evt);
+                createTextDocumentMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(CloseMenuItem);
+        createDocumentMenu.add(createTextDocumentMenuItem);
 
-        MenuBar.add(jMenu1);
+        propertiesMenu.add(createDocumentMenu);
 
-        jMenu2.setText("Edit");
+        PropertiesMenuItem.setText("Properties");
+        PropertiesMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PropertiesMenuItemActionPerformed(evt);
+            }
+        });
+        propertiesMenu.add(PropertiesMenuItem);
+
+        closeMenuItem.setText("Close");
+        closeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeMenuItemActionPerformed(evt);
+            }
+        });
+        propertiesMenu.add(closeMenuItem);
+        propertiesMenu.add(jSeparator1);
+
+        MenuBar.add(propertiesMenu);
+
+        editMenu.setText("Edit");
 
         CutMenuItem.setText("Cut");
         CutMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -154,10 +244,10 @@ public class MainWindow extends javax.swing.JFrame {
                 CutMenuItemActionPerformed(evt);
             }
         });
-        jMenu2.add(CutMenuItem);
+        editMenu.add(CutMenuItem);
 
         CopyMenuItem.setText("Copy");
-        jMenu2.add(CopyMenuItem);
+        editMenu.add(CopyMenuItem);
 
         PasteMenuItem.setText("Paste");
         PasteMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -165,22 +255,22 @@ public class MainWindow extends javax.swing.JFrame {
                 PasteMenuItemActionPerformed(evt);
             }
         });
-        jMenu2.add(PasteMenuItem);
+        editMenu.add(PasteMenuItem);
 
         DeleteMenuItem.setText("Delete");
-        jMenu2.add(DeleteMenuItem);
+        editMenu.add(DeleteMenuItem);
 
         RenameMenuItem.setText("Rename");
-        jMenu2.add(RenameMenuItem);
+        editMenu.add(RenameMenuItem);
 
-        MenuBar.add(jMenu2);
+        MenuBar.add(editMenu);
 
-        ContentsMenuItem.setText("Help");
+        helpMenuItem.setText("Help");
 
-        jMenuItem10.setText("Contents...");
-        ContentsMenuItem.add(jMenuItem10);
+        contentsMenuItem.setText("Contents...");
+        helpMenuItem.add(contentsMenuItem);
 
-        MenuBar.add(ContentsMenuItem);
+        MenuBar.add(helpMenuItem);
 
         setJMenuBar(MenuBar);
 
@@ -190,23 +280,24 @@ public class MainWindow extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(StatusBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(rootFileTreeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(rootFileTableScrollPane)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(BackButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(NextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(UpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(RefreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(HomeDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(rootFileTreeScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rootFileTableScrollPane))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(UpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(RefreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(homeDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -215,20 +306,21 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(NextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(UpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(RefreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(HomeDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(BackButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(homeDirButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(backButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(filePathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rootFileTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
-                    .addComponent(rootFileTreeScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
+                    .addComponent(rootFileTableScrollPane)
+                    .addComponent(rootFileTreeScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(StatusBar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(StatusBar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
         );
 
         //statusbar.setBorder(BorderFactory.createEtchedBorder(
@@ -237,35 +329,39 @@ public class MainWindow extends javax.swing.JFrame {
     pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CloseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseMenuItemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CloseMenuItemActionPerformed
+    private void closeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeMenuItemActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_closeMenuItemActionPerformed
 
     private void PasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteMenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_PasteMenuItemActionPerformed
-
+/**
+ * 
+ * @param evt 
+ */
     private void createFolderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderMenuItemActionPerformed
-          checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
-       boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(filePathTextField.getText().toString());
-       
-       if(ifDirectory){
-            String pathForCreateFolder= filePathTextField.getText().toString()+"\\";
-      CreateNewFolderOperation createFolder = new CreateNewFolderOperation();
-       boolean success =createFolder.createNewFolderOperation(pathForCreateFolder);
-        if (success) {
-           System.out.println("success");
+   //TODO: refactor     
+        checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
+        boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(filePathTextField.getText().toString());
+        
+        String pathForCreateFolder;
+        //check if is a Directory
+        if (ifDirectory) {
+            //check if file and with / or not
+            stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
+            pathForCreateFolder = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField);
+            //Create a new Folder..
+            CreateNewFolderOperation createFolder = new CreateNewFolderOperation();
+            createFolder.createNewFolderOperation(pathForCreateFolder, 1);
+            
+        } else {
+            System.out.println("You must select directory to make a new folder");
+
         }
-        else{
-            System.out.println("faild");
-        }
-           
-       }
-       else{
-           System.out.println("You must select directory to make a new folder");
-       }
-      
-           
+        // add new table details with new folder 
+       AddTableDetails();
+//           
 
     }//GEN-LAST:event_createFolderMenuItemActionPerformed
 
@@ -273,28 +369,69 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_CutMenuItemActionPerformed
 
-    private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add ActionListener to catch the Image Exception
-       
-    }//GEN-LAST:event_BackButtonActionPerformed
+
+    }//GEN-LAST:event_backButtonActionPerformed
 
     private void rootFileTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rootFileTreeMouseClicked
+         AddTableDetails();
+       
+    }//GEN-LAST:event_rootFileTreeMouseClicked
 
+    private void rootFileTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rootFileTreeKeyPressed
+
+    }//GEN-LAST:event_rootFileTreeKeyPressed
+
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+
+    }//GEN-LAST:event_formWindowStateChanged
+
+    private void createTextDocumentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTextDocumentMenuItemActionPerformed
+         checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
+        boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(filePathTextField.getText().toString());
         
-        TableFileDetailsController newTableFileDetailsController = new TableFileDetailsController();
+        //check if is a Directory
+        if (ifDirectory) {
+            //check if file and with / or not
+            stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
+            String pathForCreateFile = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField);
+            //Create a new text File..
+            CreateNewFileOperation newTextFile = new CreateNewFileOperation();
+           newTextFile.CreateNewFile(pathForCreateFile,1);
+           
+            
+        } else {
+            System.out.println("You must select directory to make a new text file");
+
+        }
+
+    }//GEN-LAST:event_createTextDocumentMenuItemActionPerformed
+
+    private void PropertiesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PropertiesMenuItemActionPerformed
+         
+       
+    }//GEN-LAST:event_PropertiesMenuItemActionPerformed
+/**\
+ * private void function homeDirButton
+ * @param evt 
+ * 
+ */
+    private void homeDirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeDirButtonActionPerformed
+        SetTreeModelController newSetTreeModelController = new SetTreeModelController();
+        rootFileTree = newSetTreeModelController.SetTreeModelController(rootFileTree);
+         TableFileDetailsController newTableFileDetailsController = new TableFileDetailsController();
+         filePathTextField.setText("C:\\");
         //clear table
-        
-
         ClearTableController clearTable = new ClearTableController();
         boolean isClear = clearTable.ClearTable(fileDetailsTable);
 
         //if is clear add new selected path
-        if(isClear){
+        if (isClear) {
             //check if show all file details
-            try{
-           newTableFileDetailsController.TableFileDetailsController(fileDetailsTable,filePathTextField.getText().toString());
-            }
-            catch(Exception e){
+            try {
+                newTableFileDetailsController.TableFileDetailsController(fileDetailsTable, filePathTextField.getText().toString());
+            } catch (Exception e) {
                 try {
                     throw e;
                 } catch (Exception ex) {
@@ -302,12 +439,24 @@ public class MainWindow extends javax.swing.JFrame {
                 }
             }
         }
+    }//GEN-LAST:event_homeDirButtonActionPerformed
 
-    }//GEN-LAST:event_rootFileTreeMouseClicked
+    private void fileDetailsTableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fileDetailsTableKeyReleased
+       
+    }//GEN-LAST:event_fileDetailsTableKeyReleased
 
-    private void rootFileTreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rootFileTreeKeyPressed
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+       
+    }//GEN-LAST:event_formMouseClicked
 
-    }//GEN-LAST:event_rootFileTreeKeyPressed
+    private void MenuBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuBarMouseClicked
+       
+        
+    }//GEN-LAST:event_MenuBarMouseClicked
+
+    private void filePathTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyPressed
+   AddTableDetails();
+    }//GEN-LAST:event_filePathTextFieldKeyPressed
 
     /**
      * @param args the command line arguments
@@ -345,30 +494,38 @@ public class MainWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BackButton;
-    private javax.swing.JMenuItem CloseMenuItem;
-    private javax.swing.JMenu ContentsMenuItem;
     private javax.swing.JMenuItem CopyMenuItem;
-    private javax.swing.JMenuItem CreateDocumentMenuItem;
     private javax.swing.JMenuItem CutMenuItem;
     private javax.swing.JMenuItem DeleteMenuItem;
-    private javax.swing.JButton HomeDirButton;
     private javax.swing.JMenuBar MenuBar;
-    private javax.swing.JButton NextButton;
     private javax.swing.JMenuItem PasteMenuItem;
     private javax.swing.JMenuItem PropertiesMenuItem;
     private javax.swing.JButton RefreshButton;
     private javax.swing.JMenuItem RenameMenuItem;
     private javax.swing.JLabel StatusBar;
     private javax.swing.JButton UpButton;
+    private javax.swing.JButton backButton;
+    private javax.swing.JMenuItem closeMenuItem;
+    private javax.swing.JMenuItem contentsMenuItem;
+    private javax.swing.JMenu createDocumentMenu;
     private javax.swing.JMenuItem createFolderMenuItem;
+    private javax.swing.JMenuItem createTextDocumentMenuItem;
+    private javax.swing.JMenuItem cutMenuItem;
+    private javax.swing.JMenu editMenu;
     private javax.swing.JTable fileDetailsTable;
     private javax.swing.JTextField filePathTextField;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenu helpMenuItem;
+    private javax.swing.JButton homeDirButton;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JMenu propertiesMenu;
     private javax.swing.JScrollPane rootFileTableScrollPane;
     private javax.swing.JTree rootFileTree;
     private javax.swing.JScrollPane rootFileTreeScrollPane;
+    private javax.swing.JPopupMenu tablePopupMenu;
     // End of variables declaration//GEN-END:variables
 }
