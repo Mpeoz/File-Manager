@@ -20,14 +20,14 @@ public class CreateNewFolderOperation {
     public boolean createNewFolderOperation(String path){
         File f = new File(path);
     try{
-        if(f.exists()==false){
+        if(f.exists() == false){
             f.mkdir();
-        System.out.println("Directory Created");
-        return true;
+            System.out.println("Directory Created");
+            return true;
         }
-        else{
-        System.out.println("Directory is not created");
-        return false;
+        else {
+            System.out.println("Directory is not created");
+            return false;
         }
     }catch(Exception e){
         e.printStackTrace();

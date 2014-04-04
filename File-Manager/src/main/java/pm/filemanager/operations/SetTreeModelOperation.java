@@ -17,7 +17,11 @@ import pm.filemanager.model.FileTreeModel;
  * @author alex
  */
 public class SetTreeModelOperation {
-    public JTree  SetTreeModel(JTree tree,String path){   
+
+    public SetTreeModelOperation() {
+    }
+    
+    public JTree SetTreeModel(JTree tree,String path){   
        
     //FileSystemModel  fileSystemModel = new FileSystemModel(new File(path));
    FileTreeModel  fileSystemModel = new FileTreeModel();

@@ -17,7 +17,7 @@ public class TableFileDetailsController {
     
     public boolean TableFileDetailsController(JTable table, String path){
         TableFileDetailsFao newTableFileDetailsFao = new TableFileDetailsFao();
-        boolean result=newTableFileDetailsFao.TableFileDetailsFao(table, path);
-    return result;
+        boolean result = newTableFileDetailsFao.TableFileDetailsFao(table, path);
+        return result;
     }
 }

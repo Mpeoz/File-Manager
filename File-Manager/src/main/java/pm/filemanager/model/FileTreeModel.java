@@ -20,45 +20,39 @@ import javax.swing.tree.TreePath;
  * @author alex
  */
 public class FileTreeModel implements TreeModel {  
-          private String root; // The root identifier  
-                    
+          // The root identifier 
+          private String root;        
           // Get a File object list of all of our drives  
           File[] fRoots = File.listRoots();  
-  
-          private Vector listeners; // Declare the listeners vector  
+          // Declare the listeners vector
+          private Vector listeners;   
   
           public FileTreeModel() {  
   
-               root = System.getProperty("user.dir");  
-  
-               File tempFile = new File(root);  
-                          
-               // Root is going to start as a simple string  
-             root = "\\";  
-               listeners = new Vector();  
+            root = System.getProperty("user.dir");  
+            File tempFile = new File(root);            
+            // Root is going to start as a simple string  
+            root = "\\";  
+            listeners = new Vector();  
           }  
-  
-       //Return our start string as root  
+          //Return our start string as root  
           public Object getRoot() {  
-              return root;  
-               
+              
+            return root;  
           }  
   
           public Object getChild(Object parent, int index) {  
-               // Check if this call is on our root string, if so, feed it an instance from the fRoots File object array  
-               if (parent instanceof String) { 
-                   return fRoots[index];
-               }  
-               else {  
-                    // Otherwise process a branch as normal  
-                    File directory = (File) parent;  
-                    String[] directoryMembers = directory.list();  
-                    return (new File(directory, directoryMembers[index]));
-                    
-                    //return new FileTreeModel.TreeFile(directory, directoryMembers[index]);
-                    
-                    
-               }  
+            // Check if this call is on our root string, if so, feed it an instance from the fRoots File object array  
+            if (parent instanceof String) { 
+                return fRoots[index];
+            }  
+            else {  
+                 // Otherwise process a branch as normal  
+                 File directory = (File) parent;  
+                 String[] directoryMembers = directory.list();  
+                 return (new File(directory, directoryMembers[index]));
+                 //return new FileTreeModel.TreeFile(directory, directoryMembers[index]);
+            }  
           }  
   
           public int getChildCount(Object parent) {  
@@ -82,9 +76,6 @@ public class FileTreeModel implements TreeModel {
      
                     if (fileSystemMember != null)
                       return fileSystemMember.list().length;
-    
-    
-                           
                     }  
   
                   return 0;
@@ -118,6 +109,7 @@ public class FileTreeModel implements TreeModel {
                }  
                return result;  
           }  
+          
 //  public int getIndexOfChild(Object parent, Object child) {
 //    File directory = (File) parent;
 //    File file = (File) child;
@@ -177,11 +169,11 @@ public class FileTreeModel implements TreeModel {
           public void fireTreeNodesInserted(TreeModelEvent e) {  
             Enumeration listenerCount = listeners.elements();  
             while (listenerCount.hasMoreElements()) {  
-                if(listenerCount.hasMoreElements()){
-                     TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
-              listener.treeNodesInserted(e); 
+                if(listenerCount.hasMoreElements()) {
+                    TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
+                    listener.treeNodesInserted(e); 
                 }
-                else{
+                else {
                     break;
                 }
             }
@@ -232,13 +224,14 @@ public class FileTreeModel implements TreeModel {
 //          }
 //          
       private void fireTreeNodesChanged(TreePath parentPath, int[] indices, Object[] children) {
-    TreeModelEvent event = new TreeModelEvent(this, parentPath, indices, children);
-    Iterator iterator = listeners.iterator();
-    TreeModelListener listener = null;
-    while (iterator.hasNext()) {
-      listener = (TreeModelListener) iterator.next();
-      listener.treeNodesChanged(event);
-    }
+          
+        TreeModelEvent event = new TreeModelEvent(this, parentPath, indices, children);
+        Iterator iterator = listeners.iterator();
+        TreeModelListener listener = null;
+        while (iterator.hasNext()) {
+          listener = (TreeModelListener) iterator.next();
+          listener.treeNodesChanged(event);
+        }
   }
 
  

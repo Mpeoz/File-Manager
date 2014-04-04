@@ -15,7 +15,7 @@ public class FileNameModel {
   private String fullPath;
   private char pathSeparator, extensionSeparator;
 
-  public  FileNameModel(String str, char sep, char ext) {
+  public FileNameModel(String str, char sep, char ext) {
     fullPath = str;
     pathSeparator = sep;
     extensionSeparator = ext;

@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package pm.filemanager.actions;
+package pm.filemanager.listeners;
 
 /**
  *
  * @author Enlightened
  */
-public class ActionListener {
+public class BackButtonActionListener extends ActionListener {
     
 }

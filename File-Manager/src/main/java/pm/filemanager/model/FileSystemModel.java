@@ -22,7 +22,7 @@ import javax.swing.tree.TreePath;
  * THIS IS A TEST MODEL THIS IS A TEST MODEL THIS IS A TEST MODEL
  * @author alex
  */
-public class FileSystemModel  implements TreeModel {
+public class FileSystemModel implements TreeModel {
     
   private File root;
 
