@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 import pm.filemanager.swing.MainWindow;
-
+import javax.swing.ImageIcon;
 /**
  * Hello world!
  *

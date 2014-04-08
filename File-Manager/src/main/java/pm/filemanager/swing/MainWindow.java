@@ -7,23 +7,28 @@ package pm.filemanager.swing;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import pm.filemanager.controllers.ClearTableController;
 import pm.filemanager.controllers.JTreeValueChangedController;
 import pm.filemanager.controllers.SetTreeModelController;
 import pm.filemanager.controllers.setTableFileDetailsController;
 import pm.filemanager.controllers.checkPathIfDirectoryController;
 import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
+import pm.filemanager.model.PathModel;
 import pm.filemanager.operations.CreateNewFileOperation;
 import pm.filemanager.operations.CreateNewFolderOperation;
 import pm.filemanager.operations.PathCopyToClipboardOperations;
+import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
 
 /**
  *
  * @author PTsilopoulos
  */
 public class MainWindow extends javax.swing.JFrame {
-
+PathModel newPathModel = new PathModel();
     /**
      * Creates new form mainWindow
      */
@@ -32,20 +37,61 @@ public class MainWindow extends javax.swing.JFrame {
         //set tree model
         SetTreeModelController newSetTreeModelController = new SetTreeModelController();
         rootFileTree = newSetTreeModelController.SetTreeModelController(rootFileTree);
+//------------------------------------------------------------------------------------        
+//------------------------------------------------------------------------------------        
+//add listener
+//        JTreeValueChangedController newJTreeValueChangedController = new JTreeValueChangedController();
+//        newJTreeValueChangedController.valueChanged(rootFileTree, filePathTextField);
+//TODO:Check how refactor this code  
+         rootFileTree.addTreeSelectionListener(new TreeSelectionListener() {  
+  
+        public void valueChanged(TreeSelectionEvent e) { 
+           FixTreeSelectionStringtoCorrectedPathValidator newCorrectPath = new FixTreeSelectionStringtoCorrectedPathValidator();
+             String pathForNode = newCorrectPath.FixTreeSelectionStringToCorrectedPath(e);
+            filePathTextField.setText(pathForNode);
+           newPathModel.setPath(pathForNode);
+            
+     }});    
         
-        //add listener
-        JTreeValueChangedController newJTreeValueChangedController = new JTreeValueChangedController();
-        newJTreeValueChangedController.valueChanged(rootFileTree, filePathTextField);
-        
+//------------------------------------------------------------------------------------       
+//------------------------------------------------------------------------------------        
         PathCopyToClipboardOperations newPathCopyToClipboardOperations = new PathCopyToClipboardOperations();
         
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+        
        
+        //System.out.println(newPathModel.getPath());
        
+//RightClicker
+        //fileDetailsTable.addMouseListener(new RightClicker());
+//        
+//         rootFileTree.addTreeSelectionListener(new TreeSelectionListener() {  
+//  
+//        public void valueChanged(TreeSelectionEvent e) { 
+//           FixTreeSelectionStringtoCorrectedPathValidator newCorrectPath = new FixTreeSelectionStringtoCorrectedPathValidator();
+//             String pathForNode = newCorrectPath.FixTreeSelectionStringToCorrectedPath(e);
+//            filePathTextField.setText(pathForNode);
+//        
+//     }});  
 //        //drag and drop
 //        TreeDragAndDropOperations newTreeDragAndDropOperations = new TreeDragAndDropOperations();
 //        newTreeDragAndDropOperations.getContent(rootFileTree);
 //    //this.add(new TreeDragAndDropOperations().getContent());   
+//------------------------------------------------------------------------------------        
+//------------------------------------------------------------------------------------         
+        //TODO:Check how refactor this code
+        fileDetailsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+        public void valueChanged(ListSelectionEvent event) {
+           stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
+           String nowPath = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField);
+           String selectedFile = fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(), 0).toString();
+           filePathTextField.setText("");
+           filePathTextField.setText(newPathModel.getPath().toString()+selectedFile +"\\");
+           
+        }
+    });
+ //------------------------------------------------------------------------------------        
+//------------------------------------------------------------------------------------         
     }
     
     /**
@@ -195,6 +241,11 @@ public class MainWindow extends javax.swing.JFrame {
                 "Name", "Date modified", "Type", "Size"
             }
         ));
+        fileDetailsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fileDetailsTableMouseClicked(evt);
+            }
+        });
         fileDetailsTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 fileDetailsTableKeyReleased(evt);
@@ -466,6 +517,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void filePathTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyTyped
      ClearTableAddTableDetails();
     }//GEN-LAST:event_filePathTextFieldKeyTyped
+
+    private void fileDetailsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileDetailsTableMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fileDetailsTableMouseClicked
 
     /**
      * @param args the command line arguments
