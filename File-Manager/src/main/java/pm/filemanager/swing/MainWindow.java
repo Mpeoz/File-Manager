@@ -5,14 +5,21 @@
  */
 package pm.filemanager.swing;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import pm.filemanager.controllers.ClearTableController;
+import pm.filemanager.controllers.CopyFileController;
+import pm.filemanager.controllers.CutFileController;
+import pm.filemanager.controllers.DeleteFileController;
 import pm.filemanager.controllers.JTreeValueChangedController;
+import pm.filemanager.controllers.PasteFileController;
 import pm.filemanager.controllers.SetTreeModelController;
 import pm.filemanager.controllers.setTableFileDetailsController;
 import pm.filemanager.controllers.checkPathIfDirectoryController;
@@ -20,6 +27,7 @@ import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
 import pm.filemanager.model.PathModel;
 import pm.filemanager.operations.CreateNewFileOperation;
 import pm.filemanager.operations.CreateNewFolderOperation;
+import pm.filemanager.operations.FileOperations;
 import pm.filemanager.operations.PathCopyToClipboardOperations;
 import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
 
@@ -313,6 +321,11 @@ PathModel newPathModel = new PathModel();
         editMenu.add(CutMenuItem);
 
         CopyMenuItem.setText("Copy");
+        CopyMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CopyMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(CopyMenuItem);
 
         PasteMenuItem.setText("Paste");
@@ -324,6 +337,11 @@ PathModel newPathModel = new PathModel();
         editMenu.add(PasteMenuItem);
 
         DeleteMenuItem.setText("Delete");
+        DeleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteMenuItemActionPerformed(evt);
+            }
+        });
         editMenu.add(DeleteMenuItem);
 
         RenameMenuItem.setText("Rename");
@@ -403,7 +421,12 @@ PathModel newPathModel = new PathModel();
     }//GEN-LAST:event_closeMenuItemActionPerformed
 
     private void PasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteMenuItemActionPerformed
-        // TODO add your handling code here:
+        try {
+            PasteFileController pasteController = new PasteFileController(new FileOperations());
+            pasteController.PasteFile(filePathTextField.getText());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Something went wrong!",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_PasteMenuItemActionPerformed
 /**
  * 
@@ -434,7 +457,12 @@ PathModel newPathModel = new PathModel();
     }//GEN-LAST:event_createFolderMenuItemActionPerformed
 
     private void CutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutMenuItemActionPerformed
-        // TODO add your handling code here:
+        try {
+            CutFileController cutController = new CutFileController(new FileOperations());
+            cutController.cutFile(filePathTextField.getText());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Something went wrong!",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_CutMenuItemActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
@@ -521,6 +549,29 @@ PathModel newPathModel = new PathModel();
     private void fileDetailsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileDetailsTableMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_fileDetailsTableMouseClicked
+
+    private void CopyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyMenuItemActionPerformed
+        try {
+            CopyFileController cutController = new CopyFileController(new FileOperations());
+            cutController.copyFile(filePathTextField.getText());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Something went wrong!",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_CopyMenuItemActionPerformed
+
+    private void DeleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteMenuItemActionPerformed
+        try {
+            DeleteFileController deleteController = new DeleteFileController(new FileOperations());
+            int dialogButton = JOptionPane.YES_NO_OPTION;
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this file?", "Warning", dialogButton);
+            if(dialogResult == JOptionPane.YES_OPTION) {
+                deleteController.deleteFile(filePathTextField.getText());
+            } else 
+                this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        } catch (IOException e) {
+             JOptionPane.showMessageDialog(null, e.getMessage(), "File not found!",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_DeleteMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
