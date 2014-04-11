@@ -115,6 +115,7 @@ private int countStackPrev=-1;
 //------------------------------------------------------------------------------------        
 //------------------------------------------------------------------------------------         
         //TODO:Check how refactor this code
+        //FIX: fix this code
         fileDetailsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
         public void valueChanged(ListSelectionEvent event) {
            stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
