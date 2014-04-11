@@ -32,11 +32,11 @@ public class CutFileController {
     
     public void cutFile(String sourceString) throws IOException {
         
-        ClipboardOwner co = null;
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        StringSelection st = new StringSelection(sourceString);
-        Clipboard cp = tk.getSystemClipboard();
-        cp.setContents(st, co);
+//        ClipboardOwner co = null;
+//        Toolkit tk = Toolkit.getDefaultToolkit();
+//        StringSelection st = new StringSelection(sourceString);
+//        Clipboard cp = tk.getSystemClipboard();
+//        cp.setContents(st, co);
         Path path = Paths.get(sourceString);
         // TO-DO needs fixing as it completely deletes the file making it 
         // impossible for the PasteFileController to use the Transferable

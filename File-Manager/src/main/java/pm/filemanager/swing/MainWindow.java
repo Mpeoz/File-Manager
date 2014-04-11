@@ -5,25 +5,29 @@
  */
 package pm.filemanager.swing;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import org.apache.commons.io.FileUtils;
 import pm.filemanager.controllers.ClearTableController;
-import pm.filemanager.controllers.CopyFileController;
 import pm.filemanager.controllers.CutFileController;
 import pm.filemanager.controllers.DeleteFileController;
-import pm.filemanager.controllers.PasteFileController;
 import pm.filemanager.controllers.SetTreeModelController;
 import pm.filemanager.controllers.setTableFileDetailsController;
 import pm.filemanager.controllers.checkPathIfDirectoryController;
 import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
+import pm.filemanager.model.CopyModel;
 import pm.filemanager.model.PathModel;
 import pm.filemanager.model.StackModel;
 import pm.filemanager.operations.CreateNewFileOperation;
@@ -40,6 +44,7 @@ import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
 public class MainWindow extends javax.swing.JFrame {
 PathModel newPathModel = new PathModel();
 StackPushOperation newStackPush = new StackPushOperation();
+CopyModel newCopy =  new CopyModel();
 StackModel newStack = new StackModel();
 //stack for pop
 Stack<String> stackPop = new Stack<String>();
@@ -53,6 +58,7 @@ private int countStackPrev=-1;
      */
     public MainWindow() {
         initComponents();
+       // backButton.setIcon(new ImageIcon(getClass().getResource("//pm.filemanager.images//BackIcon.png")));
         //set tree model
         SetTreeModelController newSetTreeModelController = new SetTreeModelController();
         rootFileTree = newSetTreeModelController.SetTreeModelController(rootFileTree);
@@ -113,8 +119,8 @@ private int countStackPrev=-1;
         public void valueChanged(ListSelectionEvent event) {
            stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
            String nowPath = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField);
-           fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(),0).toString();
-           filePathTextField.setText("");
+              fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(),0);
+          filePathTextField.setText("");
            filePathTextField.setText(newPathModel.getPath().toString()+fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(),0).toString() +"\\");
            //stack add for undo redo 
             newStackPush.StackPush(stackPop,newPathModel.getPath().toString()+fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(),0) +"\\");
@@ -122,6 +128,7 @@ private int countStackPrev=-1;
             countStack+=1;
            countStackPov+=1;
            countStackPrev+=1;
+           // ClearTableAddTableDetails();
         }
     });
  //------------------------------------------------------------------------------------        
@@ -236,6 +243,12 @@ private int countStackPrev=-1;
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
+            }
+        });
+
+        RefreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RefreshButtonActionPerformed(evt);
             }
         });
 
@@ -453,12 +466,34 @@ private int countStackPrev=-1;
     }//GEN-LAST:event_closeMenuItemActionPerformed
 
     private void PasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteMenuItemActionPerformed
-        try {
-            PasteFileController pasteController = new PasteFileController(new FileOperations());
-            pasteController.PasteFile(filePathTextField.getText());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Something went wrong!",JOptionPane.ERROR_MESSAGE);
-        }
+//FIX: refactor to a new boolean class 
+      //result boolean wantToCut= false
+       
+        
+    try {
+       //name of source file
+        File sourceFile = new File(newCopy.getCopyPath());
+        String name = sourceFile.getName();
+     
+        File targetFile = new File(filePathTextField.getText()+name);
+        System.out.println("Copying file : " + sourceFile.getName() +" from Java Program");
+     
+        //copy file from one location to other
+        FileUtils.copyFile(sourceFile, targetFile);
+     
+        System.out.println("copying of file from Java program is completed");
+
+ClearTableAddTableDetails();
+
+//        try {
+//            PasteFileController pasteController = new PasteFileController(new FileOperations());
+//            pasteController.PasteFile(newCopy.getCopyPath(),filePathTextField.getText());
+//        } catch (IOException e) {
+//            JOptionPane.showMessageDialog(null, e.getMessage(), "Something went wrong!",JOptionPane.ERROR_MESSAGE);
+//        }
+    } catch (IOException ex) {
+        Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }//GEN-LAST:event_PasteMenuItemActionPerformed
 /**
  * 
@@ -489,9 +524,13 @@ private int countStackPrev=-1;
     }//GEN-LAST:event_createFolderMenuItemActionPerformed
 
     private void CutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutMenuItemActionPerformed
+      //FIX: refactor to a new boolean class 
+      //result boolean wantToCut= true 
         try {
             CutFileController cutController = new CutFileController(new FileOperations());
             cutController.cutFile(filePathTextField.getText());
+            newCopy.setCopyPath(filePathTextField.getText().toString());
+            
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Something went wrong!",JOptionPane.ERROR_MESSAGE);
         }
@@ -594,12 +633,15 @@ private int countStackPrev=-1;
     }//GEN-LAST:event_fileDetailsTableMouseClicked
 
     private void CopyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyMenuItemActionPerformed
-        try {
-            CopyFileController cutController = new CopyFileController(new FileOperations());
-            cutController.copyFile(filePathTextField.getText());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Something went wrong!",JOptionPane.ERROR_MESSAGE);
-        }
+
+            newCopy.setCopyPath(filePathTextField.getText().toString());
+//        try {
+//            CopyFileController cutController = new CopyFileController(new FileOperations());
+//            cutController.copyFile(filePathTextField.getText());
+//           
+//        } catch (IOException e) {
+//            JOptionPane.showMessageDialog(null, e.getMessage(), "Something went wrong!",JOptionPane.ERROR_MESSAGE);
+//        }
     }//GEN-LAST:event_CopyMenuItemActionPerformed
 
     private void DeleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteMenuItemActionPerformed
@@ -631,6 +673,10 @@ private int countStackPrev=-1;
        
           
     }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshButtonActionPerformed
+       ClearTableAddTableDetails();
+    }//GEN-LAST:event_RefreshButtonActionPerformed
 
     /**
      * @param args the command line arguments

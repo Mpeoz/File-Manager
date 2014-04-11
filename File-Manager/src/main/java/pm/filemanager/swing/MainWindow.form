@@ -263,6 +263,9 @@
     <Component class="javax.swing.JButton" name="UpButton">
     </Component>
     <Component class="javax.swing.JButton" name="RefreshButton">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RefreshButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="homeDirButton">
       <Events>

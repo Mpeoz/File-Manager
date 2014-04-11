@@ -41,6 +41,7 @@ public class CreateNewFolderOperation {
         }
         try {
             Files.createDirectory(xPath);
+            //Files.delete();
             return true;
 
         } catch (IOException e) {

@@ -28,13 +28,23 @@ public class PasteFileController {
         this.fileOperations = fileOperations;
     }
     
-    public void PasteFile(String destinationString) throws IOException {
+//    public void PasteFile(String destinationString) throws IOException {
+//        
+//        // TO-DO create Transferable & DataFlavor gia Files
+//        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+//        String sourceString = clipboard.toString();
+//        Path sourcePath = Paths.get(sourceString);
+//        Path destinationPath = Paths.get(destinationString);
+//        fileOperations.cutPasteFile(sourcePath, destinationPath);
+//    }
+        
+         public void PasteFile(String sourceString,String destinationString) throws IOException {
         
         // TO-DO create Transferable & DataFlavor gia Files
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        String sourceString = clipboard.toString();
+       
         Path sourcePath = Paths.get(sourceString);
         Path destinationPath = Paths.get(destinationString);
         fileOperations.cutPasteFile(sourcePath, destinationPath);
     }
+        
 }

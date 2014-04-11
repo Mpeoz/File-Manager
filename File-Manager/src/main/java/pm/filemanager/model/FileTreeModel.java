@@ -155,42 +155,42 @@ public class FileTreeModel implements TreeModel {
         File parent = new File(fileParentPath);
         int[] changedChildrenIndices = { getIndexOfChild(parent, targetFile) };
         Object[] changedChildren = { targetFile };
-        fireTreeNodesChanged(path.getParentPath(), changedChildrenIndices, changedChildren);
+        //fireTreeNodesChanged(path.getParentPath(), changedChildrenIndices, changedChildren);
 
       }
   
-          public void fireTreeNodesInserted(TreeModelEvent e) {  
-            Enumeration listenerCount = listeners.elements();  
-            while (listenerCount.hasMoreElements()) {  
-                if(listenerCount.hasMoreElements()){
-                     TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
-              listener.treeNodesInserted(e); 
-                }
-                else{
-                    break;
-                }
-            }
-              
-              
-          }  
-  
-          public void fireTreeNodesRemoved(TreeModelEvent e) {  
-            Enumeration listenerCount = listeners.elements(); 
-            
-               while (listenerCount.hasMoreElements()) {  
-                   if(listenerCount.hasMoreElements()){
-               
-              TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
-              listener.treeNodesRemoved(e);  
-                   }
-                   else{
-                       break;
-                   }
-            
-          }
-            
-  
-          }  
+//          public void fireTreeNodesInserted(TreeModelEvent e) {  
+//            Enumeration listenerCount = listeners.elements();  
+//            while (listenerCount.hasMoreElements()) {  
+//                if(listenerCount.hasMoreElements()){
+//                     TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
+//              listener.treeNodesInserted(e); 
+//                }
+//                else{
+//                    break;
+//                }
+//            }
+//              
+//              
+//          }  
+//  
+//          public void fireTreeNodesRemoved(TreeModelEvent e) {  
+//            Enumeration listenerCount = listeners.elements(); 
+//            
+//               while (listenerCount.hasMoreElements()) {  
+//                   if(listenerCount.hasMoreElements()){
+//               
+//              TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
+//              listener.treeNodesRemoved(e);  
+//                   }
+//                   else{
+//                       break;
+//                   }
+//            
+//          }
+//            
+//  
+//          }  
   
           public void fireTreeNodesChanged(TreeModelEvent e) {  
             Enumeration listenerCount = listeners.elements(); 
@@ -207,17 +207,17 @@ public class FileTreeModel implements TreeModel {
   
           }  
           }
-  
-         
-      private void fireTreeNodesChanged(TreePath parentPath, int[] indices, Object[] children) {
-    TreeModelEvent event = new TreeModelEvent(this, parentPath, indices, children);
-    Iterator iterator = listeners.iterator();
-    TreeModelListener listener = null;
-    while (iterator.hasNext()) {
-      listener = (TreeModelListener) iterator.next();
-      listener.treeNodesChanged(event);
-    }
-  }
+//  
+//         
+//      private void fireTreeNodesChanged(TreePath parentPath, int[] indices, Object[] children) {
+//    TreeModelEvent event = new TreeModelEvent(this, parentPath, indices, children);
+//    Iterator iterator = listeners.iterator();
+//    TreeModelListener listener = null;
+//    while (iterator.hasNext()) {
+//      listener = (TreeModelListener) iterator.next();
+//      listener.treeNodesChanged(event);
+//    }
+//  }
 
  
 
