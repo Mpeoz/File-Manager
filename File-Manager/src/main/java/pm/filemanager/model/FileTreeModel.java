@@ -53,7 +53,6 @@ public class FileTreeModel implements TreeModel {
                     // Otherwise process a branch as normal  
                     File directory = (File) parent;  
                     String[] directoryMembers = directory.list(); 
-       
                     //return (new File(directory, directoryMembers[index]));
                     return new FileTreeModel.TreeFile(directory, directoryMembers[index]);
                     
@@ -72,7 +71,8 @@ public class FileTreeModel implements TreeModel {
                     File fileSystemMember = (File) parent;  
                     if (fileSystemMember.isDirectory()) {  
                          String[] directoryMembers = fileSystemMember.list(); 
-                       // HACK :PROBLEM WITH SOME FOLDERS 
+                         
+                        //HACK :PROBLEM WITH SOME FOLDERS 
                          if(!(directoryMembers.length==0)){
                          return directoryMembers.length;    
                          }

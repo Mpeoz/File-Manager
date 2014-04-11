@@ -6,6 +6,7 @@
 package pm.filemanager.swing;
 
 import java.io.IOException;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,17 +19,18 @@ import pm.filemanager.controllers.ClearTableController;
 import pm.filemanager.controllers.CopyFileController;
 import pm.filemanager.controllers.CutFileController;
 import pm.filemanager.controllers.DeleteFileController;
-import pm.filemanager.controllers.JTreeValueChangedController;
 import pm.filemanager.controllers.PasteFileController;
 import pm.filemanager.controllers.SetTreeModelController;
 import pm.filemanager.controllers.setTableFileDetailsController;
 import pm.filemanager.controllers.checkPathIfDirectoryController;
 import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
 import pm.filemanager.model.PathModel;
+import pm.filemanager.model.StackModel;
 import pm.filemanager.operations.CreateNewFileOperation;
 import pm.filemanager.operations.CreateNewFolderOperation;
 import pm.filemanager.operations.FileOperations;
 import pm.filemanager.operations.PathCopyToClipboardOperations;
+import pm.filemanager.operations.StackPushOperation;
 import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
 
 /**
@@ -37,6 +39,15 @@ import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
  */
 public class MainWindow extends javax.swing.JFrame {
 PathModel newPathModel = new PathModel();
+StackPushOperation newStackPush = new StackPushOperation();
+StackModel newStack = new StackModel();
+//stack for pop
+Stack<String> stackPop = new Stack<String>();
+//stack for prev
+Stack<String> stackPrev = new Stack<String>();
+private int countStack=-1;
+private int countStackPov=-1;
+private int countStackPrev=-1;
     /**
      * Creates new form mainWindow
      */
@@ -54,10 +65,20 @@ PathModel newPathModel = new PathModel();
          rootFileTree.addTreeSelectionListener(new TreeSelectionListener() {  
   
         public void valueChanged(TreeSelectionEvent e) { 
-           FixTreeSelectionStringtoCorrectedPathValidator newCorrectPath = new FixTreeSelectionStringtoCorrectedPathValidator();
+            FixTreeSelectionStringtoCorrectedPathValidator newCorrectPath = new FixTreeSelectionStringtoCorrectedPathValidator();
              String pathForNode = newCorrectPath.FixTreeSelectionStringToCorrectedPath(e);
             filePathTextField.setText(pathForNode);
            newPathModel.setPath(pathForNode);
+           //stack add for undo redo
+           newStackPush.StackPush(stackPop, pathForNode);
+           //stack for prev
+           newStackPush.StackPush(stackPrev, pathForNode);
+           
+           countStack+=1;
+           countStackPov+=1;
+           countStackPrev+=1;
+           
+           
             
      }});    
         
@@ -92,10 +113,15 @@ PathModel newPathModel = new PathModel();
         public void valueChanged(ListSelectionEvent event) {
            stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
            String nowPath = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField);
-           String selectedFile = fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(), 0).toString();
+           fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(),0).toString();
            filePathTextField.setText("");
-           filePathTextField.setText(newPathModel.getPath().toString()+selectedFile +"\\");
-           
+           filePathTextField.setText(newPathModel.getPath().toString()+fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(),0).toString() +"\\");
+           //stack add for undo redo 
+            newStackPush.StackPush(stackPop,newPathModel.getPath().toString()+fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(),0) +"\\");
+            newStackPush.StackPush(stackPrev, newPathModel.getPath().toString()+fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(),0) +"\\");          
+            countStack+=1;
+           countStackPov+=1;
+           countStackPrev+=1;
         }
     });
  //------------------------------------------------------------------------------------        
@@ -204,6 +230,12 @@ PathModel newPathModel = new PathModel();
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
+            }
+        });
+
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
             }
         });
 
@@ -466,7 +498,18 @@ PathModel newPathModel = new PathModel();
     }//GEN-LAST:event_CutMenuItemActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add ActionListener to catch the Image Exception
+//TODO:Refactor
+       System.out.println(countStackPov);
+       countStackPov=countStackPov-1;
+       countStackPrev=countStackPrev-1;
+       if(!(countStackPov<0)){
+        filePathTextField.setText(stackPop.get(countStackPov));
+        ClearTableAddTableDetails();    
+       }else{
+           countStackPov=-1;
+           stackPop.clear();
+       }
+       
 
     }//GEN-LAST:event_backButtonActionPerformed
 
@@ -572,6 +615,22 @@ PathModel newPathModel = new PathModel();
              JOptionPane.showMessageDialog(null, e.getMessage(), "File not found!",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_DeleteMenuItemActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+       if(countStackPrev<0) countStackPrev=0;
+        countStackPrev+=1;
+        if(countStackPrev>=0&&countStackPrev<=countStack){
+            System.out.println(countStackPrev);
+       filePathTextField.setText( stackPrev.get(countStackPrev));
+       ClearTableAddTableDetails();  
+       }else{
+           System.out.println("This is the last file for prev");
+          // countStackPrev=-1;
+           stackPop.clear();
+       }
+       
+          
+    }//GEN-LAST:event_nextButtonActionPerformed
 
     /**
      * @param args the command line arguments
