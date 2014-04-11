@@ -234,24 +234,30 @@ private int countStackPrev=-1;
         StatusBar.setText("Status");
         StatusBar.setName("Status"); // NOI18N
 
+        backButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\alex\\Documents\\NetBeansProjects\\File-Manager\\File-Manager\\src\\main\\java\\pm\\filemanager\\swing\\BackIcon.png")); // NOI18N
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 backButtonActionPerformed(evt);
             }
         });
 
+        nextButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\alex\\Documents\\NetBeansProjects\\File-Manager\\File-Manager\\src\\main\\java\\pm\\filemanager\\swing\\NextIcon.png")); // NOI18N
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
             }
         });
 
+        UpButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\alex\\Documents\\NetBeansProjects\\File-Manager\\File-Manager\\src\\main\\java\\pm\\filemanager\\swing\\UpIcon.png")); // NOI18N
+
+        RefreshButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\alex\\Documents\\NetBeansProjects\\File-Manager\\File-Manager\\src\\main\\java\\pm\\filemanager\\swing\\RefreshIcon.png")); // NOI18N
         RefreshButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RefreshButtonActionPerformed(evt);
             }
         });
 
+        homeDirButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\alex\\Documents\\NetBeansProjects\\File-Manager\\File-Manager\\src\\main\\java\\pm\\filemanager\\swing\\HomeIcon.png")); // NOI18N
         homeDirButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 homeDirButtonActionPerformed(evt);
