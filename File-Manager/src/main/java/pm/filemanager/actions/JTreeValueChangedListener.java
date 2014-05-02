@@ -10,7 +10,6 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import pm.filemanager.model.PathModel;
 import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
 
 /**

@@ -18,7 +18,7 @@ public class setTableFileDetailsController {
      * public boolean setTableFileDetailsController
      * @param table
      * @param path
-     * @return true if is set or nots
+     * @return true if is set or not
      */
     
     public boolean setTableFileDetailsController(JTable table, String path){

@@ -7,7 +7,7 @@
 package pm.filemanager.controllers;
 
 import javax.swing.JTextField;
-import pm.filemanager.validators.StringIfEndsWithSeparatorValidator;
+import pm.filemanager.validators.StringIfEndsorNoWithSeparatorValidator;
 
 /**
  *
@@ -16,12 +16,12 @@ import pm.filemanager.validators.StringIfEndsWithSeparatorValidator;
 public class stringIfEndsWithSeparatorController {
     /**
      * public String function stringIfEndsWithSeparator
-     * @param filePathTextField
+     * @param name String
      * @return a string with file separator.
      */
-    public String stringIfEndsWithSeparator( JTextField filePathTextField){
-       StringIfEndsWithSeparatorValidator newStringIfEndsWithSeparatorValidator  = new StringIfEndsWithSeparatorValidator(); 
-    String result = newStringIfEndsWithSeparatorValidator.checkIfStringEndWithSeparator( filePathTextField);
+    public String stringIfEndsWithSeparator( String name){
+       StringIfEndsorNoWithSeparatorValidator newStringIfEndsWithSeparatorValidator  = new StringIfEndsorNoWithSeparatorValidator(); 
+    String result = newStringIfEndsWithSeparatorValidator.checkIfStringEndWithSeparator( name);
     return result; 
  
     }

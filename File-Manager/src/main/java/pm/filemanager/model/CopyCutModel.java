@@ -10,15 +10,17 @@ package pm.filemanager.model;
  *
  * @author alex
  */
-public class CopyModel {
-    private String copyPath;
+public class CopyCutModel {
+    private String copyCutPath;
 
-    public String getCopyPath() {
-        return copyPath;
+    public String getCopyCutPath() {
+        return copyCutPath;
     }
 
-    public void setCopyPath(String copyPath) {
-        this.copyPath = copyPath;
+    public void setCopyCutPath(String copyCutPath) {
+        this.copyCutPath = copyCutPath;
     }
+
+   
     
 }

@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import pm.filemanager.operations.IFileOperations;
 
 /**

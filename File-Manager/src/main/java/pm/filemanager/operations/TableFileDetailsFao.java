@@ -9,81 +9,67 @@ import java.io.File;
 import java.util.Date;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-import pm.filemanager.model.FileNameModel;
+import pm.filemanager.controllers.GetContetTypeController;
 
 /**
  *
  * @author alex
  */
 public class TableFileDetailsFao {
-/**
- * public boolean setTableFileDetailsFao
- * @param table JTable
- * @param path String
- * @return true if details is set or false if is not
- */
-    
+
+    GetContetTypeController newGetContetTypeController = new GetContetTypeController();
+
+    /**
+     * public boolean setTableFileDetailsFao
+     *
+     * @param table JTable
+     * @param path String
+     * @return true if details is set or false if is not
+     */
+
     public boolean setTableFileDetailsFao(JTable table, String path) {
 
         File folder = new File(path);
-       boolean success = false;
+        boolean success = false;
         File[] listOfFiles = folder.listFiles();
-       try{ 
-       if(folder.isDirectory()){
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isAbsolute()) {
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.addRow(new Object[]{
-                    listOfFiles[i].getName(),
-                    new Date(listOfFiles[i].lastModified()),
-                    getContentType(listOfFiles[i]),
-                    listOfFiles[i].length() + " bytes"
+        try {
+            if (folder.isDirectory()) {
 
-                });
-            }
-        }
-                success= true;
-        
-       }
-       else if(folder.isFile()){
-           int i =0;
-         //  if (listOfFiles[i].isAbsolute()) {
+                for (int i = 0; i < listOfFiles.length; i++) {
+                    if (listOfFiles[i].isAbsolute()) {
+                        DefaultTableModel model = (DefaultTableModel) table.getModel();
+                        model.addRow(new Object[]{
+                            listOfFiles[i].getName(),
+                            new Date(listOfFiles[i].lastModified()),
+                            newGetContetTypeController.getContentType(listOfFiles[i]),
+                            listOfFiles[i].length() + " bytes"
+
+                        });
+                    }
+                }
+                success = true;
+
+            } else if (folder.isFile()) {
+                int i = 0;
+                //  if (listOfFiles[i].isAbsolute()) {
                 DefaultTableModel model = (DefaultTableModel) table.getModel();
                 model.addRow(new Object[]{
                     folder.getName(),
                     new Date(folder.lastModified()),
-                    getContentType(folder),
+                    newGetContetTypeController.getContentType(folder),
                     folder.length() + " bytes"
 
                 });
-           // }
-           success=true;
-       }
-       else{
-           success= false;
-       }
-       }catch(Exception e){
-           e.printStackTrace();;
-           
-       }
+                // }
+                success = true;
+            } else {
+                success = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();;
+
+        }
         return success;
-       
-    }
-
-    private String getContentType(File fileName) {
-
-        String type = " ";
-        if (fileName.isDirectory()) {
-            return type = "Folder";
-        } else if(fileName.isFile() ) {
-            //FIXME: bug if File is a type File // output : path of file... why?
-            FileNameModel fileNameModel = new FileNameModel(fileName.getAbsolutePath(), '/', '.');
-            return fileNameModel.extension();
-        }
-        else {
-            return type;
-        }
 
     }
 
