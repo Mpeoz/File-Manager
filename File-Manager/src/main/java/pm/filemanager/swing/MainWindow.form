@@ -289,11 +289,6 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="backButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\BackIcon.png"/>
-        </Property>
-      </Properties>
       <Events>
         <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="backButtonMouseMoved"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>
@@ -303,38 +298,18 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="nextButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\NextIcon.png"/>
-        </Property>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="UpButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\UpIcon.png"/>
-        </Property>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="RefreshButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\RefreshIcon.png"/>
-        </Property>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RefreshButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="homeDirButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\HomeIcon.png"/>
-        </Property>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="homeDirButtonActionPerformed"/>
       </Events>
