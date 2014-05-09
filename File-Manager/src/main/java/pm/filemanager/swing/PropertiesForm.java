@@ -5,7 +5,6 @@
  */
 package pm.filemanager.swing;
 
-import static android.R.attr.path;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,11 +15,7 @@ import java.nio.file.attribute.FileTime;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.activation.MimetypesFileTypeMap;
-import org.apache.commons.io.FilenameUtils;
 import pm.filemanager.controllers.GetContetTypeController;
-import pm.filemanager.model.FileNameModel;
-import pm.filemanager.validators.StringIfEndsorNoWithSeparatorValidator;
 
 /**
  *
@@ -37,9 +32,9 @@ public class PropertiesForm extends javax.swing.JFrame {
         initComponents();
         locationTextField.setEnabled(false);
         File file = new File(locationTextField.getText().toString());
-//TODO:refactor this
+        //TODO:refactor all this code too new class
         modifiedTextField.setText(new Date(file.lastModified()).toString());
-        //created  -accesed
+        //created and accesed
         Path path = Paths.get(locationTextField.getText().toString());
         BasicFileAttributes attributes;
         try {
@@ -109,6 +104,11 @@ public class PropertiesForm extends javax.swing.JFrame {
         });
 
         closeButton.setText("close");
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -122,19 +122,13 @@ public class PropertiesForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(locationLabel)
-                                .addGap(29, 29, 29))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(sizeLabel)
-                                .addGap(50, 50, 50))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(typeLabel)
-                                    .addComponent(createdLabel)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addGap(14, 14, 14)))
+                            .addComponent(locationLabel)
+                            .addComponent(sizeLabel)
+                            .addComponent(typeLabel)
+                            .addComponent(createdLabel)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(createdTextField, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(accesedTextField, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -191,6 +185,10 @@ public class PropertiesForm extends javax.swing.JFrame {
     private void createdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createdTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_createdTextFieldActionPerformed
+
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+      this.dispose();
+    }//GEN-LAST:event_closeButtonActionPerformed
 
     /**
      * @param args the command line arguments

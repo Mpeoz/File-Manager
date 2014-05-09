@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pm.filemanager.operations;
 
 import java.io.File;
@@ -15,7 +14,9 @@ import org.apache.commons.io.FileUtils;
  * @author alex
  */
 public class PasteFileOperation {
-    public boolean reslutPaste ;
+
+    public boolean resultPaste;
+    
     
     /**
      * Boolean Function PasteFile
@@ -23,57 +24,61 @@ public class PasteFileOperation {
      * @param source String
      * @param destination String
      * @return if paste is success for each of cut or paste we choose
-     * @throws IOException 
+     * @throws IOException
      */
-    public boolean PasteFile(String typeOfPaste , String source , String destination) throws IOException{
+    public boolean PasteFile(String typeOfPaste, String source, String destination) throws IOException {
 
-        if(typeOfPaste=="copy-paste"){
-            
+        if ("copy-paste".equals(typeOfPaste)) {
+
+            File sourceFile = new File(source);
+            String name = sourceFile.getName();
+            File destinationFile = new File(destination + name);
+
+            if (sourceFile.isFile()) {
+
+                FileUtils.copyFile(sourceFile, destinationFile);
+            } else {
+                FileUtils.copyDirectoryToDirectory(sourceFile, destinationFile);
+            }
+
+            File checkFileExistFile = new File(destination + name);
+
+            if (checkFileExistFile.exists()) {
+                resultPaste = true;
+            } else {
+                resultPaste = false;
+            }
+
+        } else if ("cut-paste".equals(typeOfPaste)) {
+
             File sourceFile = new File(source);
             String name = sourceFile.getName();
 
             File destinationFile = new File(destination + name);
-            FileUtils.copyFile(sourceFile, destinationFile);
-            
-            File checkFileExistFile = new File(destination + name);
-            
-            if(checkFileExistFile.exists()){
-              reslutPaste= true;  
-            }
-            else{
-               reslutPaste= false; 
-            }
-            
-           
-            
-        }
-        else if(typeOfPaste=="cut-paste"){
-             
-            File sourceFile = new File(source);
-            String name = sourceFile.getName();
 
-            File destinationFile = new File(destination + name);
-            FileUtils.copyFile(sourceFile, destinationFile);
-            
+            if (sourceFile.isFile()) {
+
+                FileUtils.copyFile(sourceFile, destinationFile);
+            } else {
+                FileUtils.copyDirectoryToDirectory(sourceFile, destinationFile);
+            }
+
             File checkFileExistFile = new File(destination + name);
-            
-            if(checkFileExistFile.exists()){
-              reslutPaste= true;  
-              //delete bec if cut
-              sourceFile.delete();
+
+            if (checkFileExistFile.exists()) {
+                resultPaste = true;
+                //delete bec if cut
+                sourceFile.delete();
+            } else {
+                resultPaste = false;
             }
-            else{
-               reslutPaste= false; 
-            }
-            
+
+        } else {
+            resultPaste = false;
         }
-        else{
-            reslutPaste= false;
-        }
-        
-        return reslutPaste;
-        
-        
+
+        return resultPaste;
+
     }
-    
+
 }

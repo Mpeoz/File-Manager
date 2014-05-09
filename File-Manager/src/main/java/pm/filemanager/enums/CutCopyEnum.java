@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package pm.filemanager.actions;
+package pm.filemanager.enums;
 
 /**
  *
- * @author Enlightened
+ * @author alex
  */
-public class BackButtonActionListener extends ActionListener {
-    
+public enum CutCopyEnum {
+    CUT,COPY;
 }

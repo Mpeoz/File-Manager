@@ -7,10 +7,12 @@ package pm.filemanager.model;
 
 import java.io.File;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Vector;
+import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
@@ -84,9 +86,11 @@ public class FileTreeModel implements TreeModel {
             if (fileSystemMember != null) {
                 return fileSystemMember.list().length;
 
+            }else {
+                return 0;
             }
 
-            return 0;
+            
         }
 
     }
@@ -118,13 +122,15 @@ public class FileTreeModel implements TreeModel {
 
     public boolean isLeaf(Object node) {
         // One last time checking if it is our root string node  
-        if (node instanceof String) {
+        if (isRoot(node)) {
             return false;
         } else {
             return ((File) node).isFile();
         }
     }
 
+    
+    
     public void addTreeModelListener(TreeModelListener l) {
         if (l != null && !listeners.contains(l)) {
             listeners.addElement(l);
@@ -150,48 +156,45 @@ public class FileTreeModel implements TreeModel {
 
     }
 
-//          public void fireTreeNodesInserted(TreeModelEvent e) {  
-//            Enumeration listenerCount = listeners.elements();  
-//            while (listenerCount.hasMoreElements()) {  
-//                if(listenerCount.hasMoreElements()){
-//                     TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
-//              listener.treeNodesInserted(e); 
-//                }
-//                else{
-//                    break;
-//                }
-//            }
-//              
-//              
-//          }  
-//  
-//          public void fireTreeNodesRemoved(TreeModelEvent e) {  
-//            Enumeration listenerCount = listeners.elements(); 
-//            
-//               while (listenerCount.hasMoreElements()) {  
-//                   if(listenerCount.hasMoreElements()){
-//               
-//              TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
-//              listener.treeNodesRemoved(e);  
-//                   }
-//                   else{
-//                       break;
-//                   }
-//            
-//          }
-//            
-//  
-//          }  
-    public void fireTreeNodesChanged(TreeModelEvent e) {
+          public void fireTreeNodesInserted(TreeModelEvent l) {  
+            Enumeration listenerCount = listeners.elements();  
+            while (listenerCount.hasMoreElements()) {  
+               
+                     TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
+              listener.treeNodesInserted(l); 
+                
+            }
+              
+              
+          }  
+  
+          public void fireTreeNodesRemoved(TreeModelEvent l) {  
+            Enumeration listenerCount = listeners.elements(); 
+            
+               while (listenerCount.hasMoreElements()) {  
+                   
+               
+              TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
+              listener.treeNodesRemoved(l);  
+                   
+            
+          }
+            
+  
+          }  
+    public void fireTreeNodesChanged(TreeModelEvent l) {
         Enumeration listenerCount = listeners.elements();
 
         while (listenerCount.hasMoreElements()) {
 
             TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();
-            listener.treeNodesChanged(e);
+            listener.treeNodesChanged(l);
 
         }
     }
+    
+    
+
 //  
 //         
 //      private void fireTreeNodesChanged(TreePath parentPath, int[] indices, Object[] children) {
@@ -213,6 +216,25 @@ public class FileTreeModel implements TreeModel {
         public String toString() {
             return getName();
         }
+      
     }
+    
+      private boolean isRoot(Object node) {
+        return node != null && node == getRoot();
+    }
+      
+     public void treeNodesChanged(TreePath treePath,int[] indiceOfOnsertedItems,Object[] insertedItems,String my_source ){
+         TreePath path_to_parent_of_inserted_items =  treePath;
+        int[] indices_of_inserted_items = indiceOfOnsertedItems ;
+        Object[] inserted_items = insertedItems ;
+        TreeModelEvent tme = new TreeModelEvent(
+          my_source,
+         path_to_parent_of_inserted_items,
+         indices_of_inserted_items,
+         inserted_items
+     );
+     }
+     
+     
 
 }

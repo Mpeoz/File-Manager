@@ -3,25 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package pm.filemanager.validators;
 
 /**
  *
  * @author alex
  */
-public class CorrectTxtNameValidator {
-
+public class CorrectNameValidator {
     /**
-     * boolean function CorrectTxtName
-     *
+     * Function boolean CorrectName 
      * @param name String
-     * @return true if is txt or false if is not
+     * @return true if is correct ( with out spaces and no empty ) else return false
      */
-    public boolean CorrectTxtName(String name) {
+     public boolean CorrectName(String name) {
 
-        return name.toLowerCase().endsWith(".txt") && !name.matches(".*([ \t]).*") && !name.isEmpty();
+        return  !name.matches(".*([ \t]).*") && !name.isEmpty();
 
     }
     
-
 }

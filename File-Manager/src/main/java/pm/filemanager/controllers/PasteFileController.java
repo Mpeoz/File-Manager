@@ -10,35 +10,25 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 import pm.filemanager.operations.IFileOperations;
+import pm.filemanager.operations.PasteFileOperation;
 
 /**
  *
  * @author PTsilopoulos
  */
 public class PasteFileController {
-
-    private static final Logger LOG = Logger.getLogger(DeleteFileController.class.getName());
-    private final IFileOperations fileOperations;
-
-    public PasteFileController(IFileOperations fileOperations) {
-        this.fileOperations = fileOperations;
+  /**
+   * Public Boolean PasteFile
+   * @param typeOfPaste String
+   * @param source String
+   * @param destination String
+   * @return true if pasted success else return false
+   * @throws IOException 
+   */
+    public boolean PasteFile(String typeOfPaste, String source, String destination) throws IOException{
+        PasteFileOperation pasteFile = new PasteFileOperation();
+        return pasteFile.PasteFile(typeOfPaste, source, destination);
     }
-
-//    public void PasteFile(String destinationString) throws IOException {
-//        
-//        // TO-DO create Transferable & DataFlavor gia Files
-//        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-//        String sourceString = clipboard.toString();
-//        Path sourcePath = Paths.get(sourceString);
-//        Path destinationPath = Paths.get(destinationString);
-//        fileOperations.cutPasteFile(sourcePath, destinationPath);
-//    }
-    public void PasteFile(String sourceString, String destinationString) throws IOException {
-
-        // TO-DO create Transferable & DataFlavor gia Files
-        Path sourcePath = Paths.get(sourceString);
-        Path destinationPath = Paths.get(destinationString);
-        fileOperations.cutPasteFile(sourcePath, destinationPath);
-    }
+    
 
 }

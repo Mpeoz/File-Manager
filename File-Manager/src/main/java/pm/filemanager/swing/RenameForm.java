@@ -8,6 +8,7 @@ package pm.filemanager.swing;
 
 import java.awt.Color;
 import java.io.File;
+import pm.filemanager.controllers.CorrectNameController;
 import pm.filemanager.controllers.CorrectTxtNameController;
 import pm.filemanager.controllers.RenameAFileController;
 
@@ -146,6 +147,8 @@ boolean resultCorrectTxtName;
         }else{
             System.out.println("Cant rename a noexist file");
         }
+         MainWindow.rootFileTree.updateUI();
+         this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void newNameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newNameTextFieldKeyPressed
@@ -157,18 +160,42 @@ boolean resultCorrectTxtName;
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void newNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newNameTextFieldKeyReleased
-        CorrectTxtNameController newCorrectTxtName = new CorrectTxtNameController();
-         resultCorrectTxtName =newCorrectTxtName.CorrectTxtName(newNameTextField.getText().toString());
-         if(resultCorrectTxtName){
-             newNameTextField.setBackground(Color.green);
-             okButton.setVisible(true);
-         }
-         else{
-              newNameTextField.setBackground(Color.red);
-              anncoumentLabel.setText("new name must ends with .txt");
-               anncoumentLabel.setForeground(Color.red);
-              okButton.setVisible(false);
-         }
+//        File pathFile = new File(oldPathTextField.getText().toString());
+//        
+//        if(pathFile.isFile()){
+//            CorrectTxtNameController newCorrectTxtName = new CorrectTxtNameController();
+//           resultCorrectTxtName =newCorrectTxtName.CorrectTxtName(newNameTextField.getText().toString());
+//                if(resultCorrectTxtName){
+//                    newNameTextField.setBackground(Color.green);
+//                    okButton.setVisible(true);
+//                    
+//                }
+//                else{
+//                     newNameTextField.setBackground(Color.red);
+//                     anncoumentLabel.setText("new name must ends with .txt");
+//                      anncoumentLabel.setForeground(Color.red);
+//                     okButton.setVisible(false);
+//                     
+//                }
+//        }
+//        else{
+//            CorrectNameController newCorrectName = new CorrectNameController();
+//            resultCorrectTxtName =newCorrectName.CorrectName(newNameTextField.getText().toString());
+//                if(resultCorrectTxtName){
+//                    newNameTextField.setBackground(Color.green);
+//                    okButton.setVisible(true);
+//                    
+//                }
+//                else{
+//                     newNameTextField.setBackground(Color.red);
+//                     anncoumentLabel.setText("wrong name");
+//                      anncoumentLabel.setForeground(Color.red);
+//                     okButton.setVisible(false);
+//                      
+//                }
+//            
+//        }
+//         MainWindow.rootFileTree.updateUI();
     }//GEN-LAST:event_newNameTextFieldKeyReleased
 
     /**

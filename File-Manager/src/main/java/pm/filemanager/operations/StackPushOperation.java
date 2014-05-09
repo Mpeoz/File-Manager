@@ -6,6 +6,7 @@
 
 package pm.filemanager.operations;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -14,29 +15,30 @@ import java.util.Stack;
  *
  * @author alex
  */
-public class StackPushOperation {
+public class StackPushOperation implements IFileCommand {
      /**
      * public List function 
      * @param stack
      * @param name String
-     * @return undo
+     * @throws java.io.IOException
      */
-    public void StackPush(Stack<String> stack,String name){
+    @Override
+    public void Do(Stack<String> stack,String name) throws IOException{
         stack.push(name);
         
-        
-        
            }
-//    public List StackPush(String name){
-//        List myList = new LinkedList();
-//        myList.add(new String(name));
-//        return myList;
-//        
-//           }
-    public void StackPop(Stack nameStack){
+
+    @Override
+    public void Undo(Stack nameStack,String name)  throws IOException{
         nameStack.pop().toString();
    
     }
+    
+    @Override
+      public void Redo(Stack<String> stack, String name) throws IOException{
+          
+      }
+   
     
 }
 

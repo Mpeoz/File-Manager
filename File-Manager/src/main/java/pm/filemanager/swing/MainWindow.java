@@ -5,33 +5,33 @@
  */
 package pm.filemanager.swing;
 
-import java.awt.Image;
 import java.io.File;
+import java.lang.Object;
 import java.io.IOException;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import pm.filemanager.controllers.ClearTableController;
 import pm.filemanager.controllers.DeleteFileController;
+import pm.filemanager.controllers.NextButtonActionController;
+import pm.filemanager.controllers.PasteFileController;
+import pm.filemanager.controllers.PushWhenValueChangedController;
 import pm.filemanager.controllers.SetTreeModelController;
 import pm.filemanager.controllers.setTableFileDetailsController;
-import pm.filemanager.controllers.checkPathIfDirectoryController;
+import pm.filemanager.controllers.createFolderMenuItemController;
 import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
 import pm.filemanager.model.CopyCutModel;
 import pm.filemanager.model.PathModel;
 import pm.filemanager.model.StackModel;
-import pm.filemanager.operations.CreateNewFileOperation;
-import pm.filemanager.operations.CreateNewFolderOperation;
+import pm.filemanager.operations.CreateNewFileMenuItemOperatation;
 import pm.filemanager.operations.FileOperations;
-import pm.filemanager.operations.PasteFileOperation;
 import pm.filemanager.operations.StackPushOperation;
 import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
+import pm.filemanager.validators.RemoveLastSeparatorValidator;
 
 /**
  *
@@ -44,58 +44,61 @@ public class MainWindow extends javax.swing.JFrame {
     StackPushOperation newStackPush = new StackPushOperation();
 
     StackModel newStack = new StackModel();
-//stack for pop
+    //stack for pop
     Stack<String> stackPop = new Stack<String>();
-//stack for prev
+    //stack for prev
     Stack<String> stackPrev = new Stack<String>();
-    //FIXME: magic numbers
-    private int countStack = -1;
-    private int countStackPov = -1;
-    private int countStackPrev = -1;
+    //push when value changed
+    PushWhenValueChangedController pushWhenValueChanged = new PushWhenValueChangedController();
+    private int countStack ;
+    private int countStackPov ;
+    private int countStackPrev ;
+    
 
     //new cut-Copy model
     CopyCutModel copyCut = new CopyCutModel();
     //paste String type 
     String pasteType = "";
-    //hover mouse 
+            
+       
 
+    
     /**
      * Creates new form mainWindow
      */
     public MainWindow() {
         initComponents();
-        //set tool tip to the buttons
-        backButton.setToolTipText("back ");
-        nextButton.setToolTipText("next  ");
-        UpButton.setToolTipText("Up ");
-        RefreshButton.setToolTipText(" Refresh ");
-        homeDirButton.setToolTipText("home directory ");
-        //TODO:image button add
-
+        //set tool tip to the buttons (hover mouse)
+        backButton.setToolTipText("back");
+        nextButton.setToolTipText("next");
+        UpButton.setToolTipText("Up");
+        RefreshButton.setToolTipText("Refresh");
+        homeDirButton.setToolTipText("home directory");
+        //TODO:image button add because problems with other pc default location
+        // addd code here
         //set tree modelback
         rootFileTree = newSetTreeModelController.SetTreeModelController(rootFileTree);
 
-//TODO:Check how refactor this code  
+        //TODO:Check how refactor this code  
         rootFileTree.addTreeSelectionListener(new TreeSelectionListener() {
-
+            @Override
             public void valueChanged(TreeSelectionEvent e) {
                 FixTreeSelectionStringtoCorrectedPathValidator newCorrectPath = new FixTreeSelectionStringtoCorrectedPathValidator();
                 String pathForNode = newCorrectPath.FixTreeSelectionStringToCorrectedPath(e);
                 filePathTextField.setText(pathForNode);
                 newPathModel.setPath(pathForNode);
-                //stack add for undo redo
-                newStackPush.StackPush(stackPop, pathForNode);
-                //stack for prev
-                newStackPush.StackPush(stackPrev, pathForNode);
-                //FIXME: magic numbers
-                countStack += 1;
-                countStackPov += 1;
-                countStackPrev += 1;
+                try {
+                    pushWhenValueChanged.stackPush(newStackPush, stackPop, stackPrev, pathForNode);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                countStack ++;
+                countStackPov ++;
+                countStackPrev ++;
 
             }
         });
-
-        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(MainWindow.EXIT_ON_CLOSE);
 
     }
 
@@ -103,7 +106,9 @@ public class MainWindow extends javax.swing.JFrame {
      *
      * Add table details
      */
-    private void ClearTableAddTableDetails() {
+
+    //refactor se kainourgia i prepei na einai edw mesa? 
+    public void ClearTableAddTableDetails() {
 
         setTableFileDetailsController newTableFileDetailsController = new setTableFileDetailsController();
         //clear table
@@ -124,6 +129,13 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
     }
+
+    /**
+     * Checks which nodes are visible throught the JTREE, reloads the tree, and
+     * set those nodes visible again
+     */
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -159,7 +171,6 @@ public class MainWindow extends javax.swing.JFrame {
         createTextDocumentMenuItem = new javax.swing.JMenuItem();
         PropertiesMenuItem = new javax.swing.JMenuItem();
         closeMenuItem = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         editMenu = new javax.swing.JMenu();
         CutMenuItem = new javax.swing.JMenuItem();
         CopyMenuItem = new javax.swing.JMenuItem();
@@ -255,6 +266,14 @@ public class MainWindow extends javax.swing.JFrame {
                 formMouseClicked(evt);
             }
         });
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                formFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                formFocusLost(evt);
+            }
+        });
         addWindowStateListener(new java.awt.event.WindowStateListener() {
             public void windowStateChanged(java.awt.event.WindowEvent evt) {
                 formWindowStateChanged(evt);
@@ -284,6 +303,11 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         UpButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\alex\\Documents\\NetBeansProjects\\File-Manager\\File-Manager\\src\\main\\java\\pm\\filemanager\\swing\\UpIcon.png")); // NOI18N
+        UpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpButtonActionPerformed(evt);
+            }
+        });
 
         RefreshButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\alex\\Documents\\NetBeansProjects\\File-Manager\\File-Manager\\src\\main\\java\\pm\\filemanager\\swing\\RefreshIcon.png")); // NOI18N
         RefreshButton.addActionListener(new java.awt.event.ActionListener() {
@@ -324,6 +348,9 @@ public class MainWindow extends javax.swing.JFrame {
         filePathTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 filePathTextFieldKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                filePathTextFieldKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 filePathTextFieldKeyTyped(evt);
@@ -401,7 +428,6 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         propertiesMenu.add(closeMenuItem);
-        propertiesMenu.add(jSeparator1);
 
         MenuBar.add(propertiesMenu);
 
@@ -528,13 +554,14 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void PasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteMenuItemActionPerformed
 
-        PasteFileOperation paste = new PasteFileOperation();
+        PasteFileController paste = new PasteFileController();
         try {
             paste.PasteFile(pasteType, copyCut.getCopyCutPath(), filePathTextField.getText().toString());
 
         } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
+        rootFileTree.updateUI();
         ClearTableAddTableDetails();
 
     }//GEN-LAST:event_PasteMenuItemActionPerformed
@@ -543,56 +570,39 @@ public class MainWindow extends javax.swing.JFrame {
      * @param evt
      */
     private void createFolderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderMenuItemActionPerformed
-
-        checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
-        boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(filePathTextField.getText().toString());
-        //TODO: refactor         
-        //check if is a Directory
-        if (ifDirectory) {
-            //check if file and with / or not
-            stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
-            String pathForCreateFolder = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField.getText().toString());
-            //Create a new Folder..
-            CreateNewFolderOperation createFolder = new CreateNewFolderOperation();
-            createFolder.createNewFolderOperation(pathForCreateFolder, 1);
-
-        } else {
-            System.out.println("You must select directory to make a new folder");
-
-        }
-        //
-
-        // add new table details  
+    createFolderMenuItemController createFolder = new createFolderMenuItemController();
+    createFolder.createFolderMenuItem(filePathTextField.getText().toString());
+        rootFileTree.updateUI();
         ClearTableAddTableDetails();
-
+        
 
     }//GEN-LAST:event_createFolderMenuItemActionPerformed
 
     private void CutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutMenuItemActionPerformed
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "cut-paste";
-
+        rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_CutMenuItemActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-//TODO:Refactor
-        System.out.println(countStackPov);
-        //FIXME: magic numbers
-        countStackPov = countStackPov - 1;
-        countStackPrev = countStackPrev - 1;
+        countStackPov--;
+        countStackPrev--;
         if (!(countStackPov < 0)) {
+            //if first time must countStackPov -1
             filePathTextField.setText(stackPop.get(countStackPov));
-            ClearTableAddTableDetails();
+           
         } else {
-            //FIXME: magic numbers
+            //-1 bec first elem on Array is at 0 array[0]..
             countStackPov = -1;
             stackPop.clear();
         }
-
+        ClearTableAddTableDetails();
 
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void rootFileTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rootFileTreeMouseClicked
+         rootFileTree.updateUI();
         ClearTableAddTableDetails();
     }//GEN-LAST:event_rootFileTreeMouseClicked
 
@@ -605,22 +615,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowStateChanged
 
     private void createTextDocumentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTextDocumentMenuItemActionPerformed
-        checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
-        boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(filePathTextField.getText().toString());
-
-        //check if is a Directory
-        if (ifDirectory) {
-            //check if file and with / or not
-            stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
-            String pathForCreateFile = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField.getText().toString());
-            //Create a new text File..
-            CreateNewFileOperation newTextFile = new CreateNewFileOperation();
-            newTextFile.CreateNewFile(pathForCreateFile, 1);
-
-        } else {
-            System.out.println("You must select directory to make a new text file");
-
-        }
+       CreateNewFileMenuItemOperatation newCreateNewFile = new CreateNewFileMenuItemOperatation();
+       newCreateNewFile.createNewFileMenuItem(filePathTextField.getText().toString());
+        rootFileTree.updateUI();
         ClearTableAddTableDetails();
     }//GEN-LAST:event_createTextDocumentMenuItemActionPerformed
 
@@ -638,10 +635,11 @@ public class MainWindow extends javax.swing.JFrame {
      */
     private void homeDirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeDirButtonActionPerformed
 
-        SetTreeModelController newSetTreeModelController = new SetTreeModelController();
+        SetTreeModelController newSetTreeModel = new SetTreeModelController();
         rootFileTree = newSetTreeModelController.SetTreeModelController(rootFileTree);
         //set Home Directory to filepathTextField 
         filePathTextField.setText("C:\\");
+        rootFileTree.updateUI();
         ClearTableAddTableDetails();
     }//GEN-LAST:event_homeDirButtonActionPerformed
 
@@ -669,28 +667,33 @@ public class MainWindow extends javax.swing.JFrame {
     private void filePathTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyTyped
         ClearTableAddTableDetails();
     }//GEN-LAST:event_filePathTextFieldKeyTyped
-
+    /**
+     * private void function fileDetailsTableMouseClicked
+     *
+     * @param evt
+     */
     private void fileDetailsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileDetailsTableMouseClicked
         stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
         String nowPath = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField.getText().toString());
 
-        if (!(fileDetailsTable.getSelectedRow() == -1)) {
-
+        if (!(fileDetailsTable.getSelectedRow() < 0)) {
             String nameOfFile = fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(), 0).toString();
-
             filePathTextField.setText("");
             String path = newPathModel.getPath().toString() + nameOfFile + "\\";
             File file = new File(path);
             //check if file exist with now path   
             if (file.exists()) {
-
                 filePathTextField.setText(path);
-                //stack add for undo redo 
-                newStackPush.StackPush(stackPop, newPathModel.getPath().toString() + fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(), 0) + "\\");
-                newStackPush.StackPush(stackPrev, newPathModel.getPath().toString() + fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(), 0) + "\\");
-                countStack += 1;
-                countStackPov += 1;
-                countStackPrev += 1;
+                PushWhenValueChangedController newPushWhenValueChanged = new PushWhenValueChangedController();
+                String pathForNode = newPathModel.getPath().toString() + fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(), 0) + "\\";
+                try {
+                    newPushWhenValueChanged.stackPush(newStackPush, stackPop, stackPrev, pathForNode);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                countStack ++;
+                countStackPov ++;
+                countStackPrev ++;
             } else {
                 filePathTextField.setText(nowPath);
 
@@ -699,6 +702,7 @@ public class MainWindow extends javax.swing.JFrame {
         } else {
             fileDetailsTable.setRowSelectionInterval(0, 0);
         }
+         ClearTableAddTableDetails();
 
     }//GEN-LAST:event_fileDetailsTableMouseClicked
 
@@ -706,6 +710,8 @@ public class MainWindow extends javax.swing.JFrame {
 
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "copy-paste";
+        rootFileTree.updateUI();
+        ClearTableAddTableDetails();
 
     }//GEN-LAST:event_CopyMenuItemActionPerformed
 
@@ -722,27 +728,19 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "File not found!", JOptionPane.ERROR_MESSAGE);
         }
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_DeleteMenuItemActionPerformed
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        if (countStackPrev < 0) {
-            countStackPrev = 0;
-        }
         countStackPrev += 1;
-        if (countStackPrev >= 0 && countStackPrev <= countStack) {
-            System.out.println(countStackPrev);
-            filePathTextField.setText(stackPrev.get(countStackPrev));
-            ClearTableAddTableDetails();
-        } else {
-            System.out.println("This is the last file for prev");
-            // countStackPrev=-1;
-            stackPop.clear();
-        }
-
-
+       NextButtonActionController nextButtonAction = new NextButtonActionController(); 
+       nextButtonAction.NextButtonAction(countStackPrev, countStack, stackPrev, stackPop, filePathTextField);
+       ClearTableAddTableDetails();
     }//GEN-LAST:event_nextButtonActionPerformed
 
     private void RefreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshButtonActionPerformed
+        rootFileTree.updateUI();
         ClearTableAddTableDetails();
     }//GEN-LAST:event_RefreshButtonActionPerformed
 
@@ -759,6 +757,8 @@ public class MainWindow extends javax.swing.JFrame {
         RenameForm newRenameForm = new RenameForm();
         RenameForm.oldPathTextField.setText(filePathTextField.getText().toString());
         newRenameForm.setVisible(true);
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
 
 
     }//GEN-LAST:event_RenameMenuItemActionPerformed
@@ -766,21 +766,26 @@ public class MainWindow extends javax.swing.JFrame {
     private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "cut-paste";
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_cutMenuItemActionPerformed
 
     private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "copy-paste";
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_copyMenuItemActionPerformed
 
     private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMenuItemActionPerformed
-        PasteFileOperation paste = new PasteFileOperation();
+        PasteFileController paste = new PasteFileController();
         try {
             paste.PasteFile(pasteType, copyCut.getCopyCutPath(), filePathTextField.getText().toString());
 
         } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
+          rootFileTree.updateUI();
         ClearTableAddTableDetails();
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
@@ -797,32 +802,41 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "File not found!", JOptionPane.ERROR_MESSAGE);
         }
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private void renameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameMenuItemActionPerformed
         RenameForm newRenameForm = new RenameForm();
         RenameForm.oldPathTextField.setText(filePathTextField.getText().toString());
         newRenameForm.setVisible(true);
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_renameMenuItemActionPerformed
 
     private void cutMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cutMenuItemMouseReleased
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "cut-paste";
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_cutMenuItemMouseReleased
 
     private void copyMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_copyMenuItemMouseReleased
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "copy-paste";
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_copyMenuItemMouseReleased
 
     private void pasteMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pasteMenuItemMouseReleased
-        PasteFileOperation paste = new PasteFileOperation();
+        PasteFileController paste = new PasteFileController();
         try {
             paste.PasteFile(pasteType, copyCut.getCopyCutPath(), filePathTextField.getText().toString());
 
         } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
+         rootFileTree.updateUI();
         ClearTableAddTableDetails();
     }//GEN-LAST:event_pasteMenuItemMouseReleased
 
@@ -839,6 +853,8 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "File not found!", JOptionPane.ERROR_MESSAGE);
         }
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_deleteMenuItemMouseReleased
 
     private void backButtonMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backButtonMouseMoved
@@ -855,6 +871,8 @@ public class MainWindow extends javax.swing.JFrame {
         RenameForm newRenameForm = new RenameForm();
         RenameForm.oldPathTextField.setText(filePathTextField.getText().toString());
         newRenameForm.setVisible(true);
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
     }//GEN-LAST:event_renameMenuItemMouseReleased
 
     private void propertiesMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_propertiesMenuItemMouseReleased
@@ -862,6 +880,28 @@ public class MainWindow extends javax.swing.JFrame {
         PropertiesForm.locationTextField.setText(filePathTextField.getText().toString());
         newPropertiesForm.setVisible(true);
     }//GEN-LAST:event_propertiesMenuItemMouseReleased
+
+    private void filePathTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyReleased
+          rootFileTree.updateUI();
+        ClearTableAddTableDetails();
+    }//GEN-LAST:event_filePathTextFieldKeyReleased
+
+    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
+        rootFileTree.updateUI();
+        ClearTableAddTableDetails();
+    }//GEN-LAST:event_formFocusGained
+
+    private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
+        rootFileTree.updateUI();
+        ClearTableAddTableDetails();
+    }//GEN-LAST:event_formFocusLost
+
+    private void UpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpButtonActionPerformed
+       RemoveLastSeparatorValidator removeLastSeparator = new RemoveLastSeparatorValidator();
+       String removed = removeLastSeparator.removeLastSeparator(filePathTextField.getText().toString());
+       System.out.println(removed);
+       filePathTextField.setText(removed);
+    }//GEN-LAST:event_UpButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -892,6 +932,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MainWindow().setVisible(true);
             }
@@ -923,14 +964,13 @@ public class MainWindow extends javax.swing.JFrame {
     public javax.swing.JTextField filePathTextField;
     private javax.swing.JMenu helpMenuItem;
     private javax.swing.JButton homeDirButton;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JButton nextButton;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenu propertiesMenu;
     private javax.swing.JMenuItem propertiesMenuItem;
     private javax.swing.JMenuItem renameMenuItem;
     private javax.swing.JScrollPane rootFileTableScrollPane;
-    private javax.swing.JTree rootFileTree;
+    public static javax.swing.JTree rootFileTree;
     private javax.swing.JScrollPane rootFileTreeScrollPane;
     private javax.swing.JPopupMenu tablePopupMenu;
     // End of variables declaration//GEN-END:variables
