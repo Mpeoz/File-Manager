@@ -7,7 +7,7 @@
 package pm.filemanager.enums;
 
 /**
- *
+ *  enum CutCopyEnum
  * @author alex
  */
 public enum CutCopyEnum {
