@@ -6,6 +6,7 @@
 
 package pm.filemanager.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,9 +33,9 @@ public class CutFileController {
 //        StringSelection st = new StringSelection(sourceString);
 //        Clipboard cp = tk.getSystemClipboard();
 //        cp.setContents(st, co);
-        Path path = Paths.get(sourceString);
+        File path = new File(sourceString);
         // TO-DO needs fixing as it completely deletes the file making it 
         // impossible for the PasteFileController to use the Transferable
-        fileOperations.deleteFile(path);
+        path.delete();
     }  
 }

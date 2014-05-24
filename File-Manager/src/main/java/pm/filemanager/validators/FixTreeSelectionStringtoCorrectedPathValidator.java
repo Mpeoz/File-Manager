@@ -35,4 +35,21 @@ public class FixTreeSelectionStringtoCorrectedPathValidator {
             return pathForNode;
     }
     
+    public String undoPathToTreePath(TreeSelectionEvent e){
+          //remove [Computer, from string
+            String pathForNode = e.getPath().toString().replaceAll("","^\\[Computer,");
+            //remove all \ from string
+            pathForNode=pathForNode.replaceAll("","\\\\");
+             //remove all white spaces from string
+            pathForNode=pathForNode.replaceAll("\\s+","");
+            //replace all , with \
+            pathForNode=pathForNode.replaceAll(",","\\\\");
+            //remove ] from string 
+            pathForNode=pathForNode.replaceAll("]","");
+            //add \ to end of path
+            pathForNode=pathForNode.replaceAll("$","\\\\");
+            //return a fixed path String..
+            return pathForNode;
+    }
+    
 }

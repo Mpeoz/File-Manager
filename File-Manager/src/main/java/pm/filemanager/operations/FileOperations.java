@@ -6,9 +6,11 @@
 
 package pm.filemanager.operations;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -19,8 +21,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class FileOperations implements IFileOperations {
     
     @Override
-    public boolean deleteFile(Path filePath) throws IOException {
-        Files.delete(filePath);
+    public boolean deleteFile(File filePath) throws IOException {
+        filePath.delete();
         return true;
     }
     

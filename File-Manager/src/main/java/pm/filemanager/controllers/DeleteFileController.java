@@ -6,6 +6,7 @@
 
 package pm.filemanager.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,8 +26,10 @@ public class DeleteFileController {
     }
     
     public void deleteFile(String pathString) throws IOException {
-        Path path = Paths.get(pathString);
-        fileOperations.deleteFile(path);
+       // Path path = Paths.get(pathString);
+        File file = new File(pathString);
+        fileOperations.deleteFile(file);
+       
         //return JOptionPane.showMessageDialog(null, LOG, "Success!", INFORMATION_MESSAGE);
     }
 }

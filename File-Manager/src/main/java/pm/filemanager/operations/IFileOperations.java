@@ -6,6 +6,7 @@
 
 package pm.filemanager.operations;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -15,7 +16,7 @@ import java.nio.file.Path;
  */
 public interface IFileOperations {
     
-    boolean deleteFile(Path filePath) throws IOException;
+    boolean deleteFile(File filePath) throws IOException;
     
     boolean copyPasteFile(Path source, Path dest) throws IOException;
             

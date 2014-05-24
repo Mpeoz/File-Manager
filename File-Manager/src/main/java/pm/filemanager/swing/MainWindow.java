@@ -16,13 +16,16 @@ import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import pm.filemanager.controllers.LocalStorage;
 import pm.filemanager.controllers.ClearTableController;
+import pm.filemanager.controllers.DeleteCommandController;
 import pm.filemanager.controllers.DeleteFileController;
 import pm.filemanager.controllers.NextButtonActionController;
 import pm.filemanager.controllers.OpenWebPageController;
 import pm.filemanager.controllers.PasteFileController;
 import pm.filemanager.controllers.PushWhenValueChangedController;
 import pm.filemanager.controllers.SetTreeModelController;
+import pm.filemanager.controllers.UndoController;
 import pm.filemanager.controllers.setTableFileDetailsController;
 import pm.filemanager.controllers.createFolderMenuItemController;
 import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
@@ -31,6 +34,7 @@ import pm.filemanager.model.PathModel;
 import pm.filemanager.model.StackModel;
 import pm.filemanager.operations.CreateNewFileMenuItemOperatation;
 import pm.filemanager.operations.FileOperations;
+import pm.filemanager.operations.ICommand;
 import pm.filemanager.operations.StackPushOperation;
 import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
 import pm.filemanager.validators.RemoveLastSeparatorValidator;
@@ -147,6 +151,7 @@ public class MainWindow extends javax.swing.JFrame {
         deleteMenuItem = new javax.swing.JMenuItem();
         renameMenuItem = new javax.swing.JMenuItem();
         propertiesMenuItem = new javax.swing.JMenuItem();
+        undoMenuItem = new javax.swing.JMenuItem();
         StatusBar = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
@@ -251,6 +256,14 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         tablePopupMenu.add(propertiesMenuItem);
+
+        undoMenuItem.setText("undo");
+        undoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoMenuItemActionPerformed(evt);
+            }
+        });
+        tablePopupMenu.add(undoMenuItem);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -715,17 +728,24 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_CopyMenuItemActionPerformed
 
     private void DeleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteMenuItemActionPerformed
+//        try {
+//            DeleteFileController deleteController = new DeleteFileController(new FileOperations());
+//            int dialogButton = JOptionPane.YES_NO_OPTION;
+//            int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this file?", "Warning", dialogButton);
+//            if (dialogResult == JOptionPane.YES_OPTION) {
+//                deleteController.deleteFile(filePathTextField.getText());
+//            } else {
+//                this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+//            }
+//        } catch (IOException e) {
+//            JOptionPane.showMessageDialog(null, e.getMessage(), "File not found!", JOptionPane.ERROR_MESSAGE);
+//        }
+
+        DeleteCommandController newDeleteCommandController = new DeleteCommandController(filePathTextField.getText());
         try {
-            DeleteFileController deleteController = new DeleteFileController(new FileOperations());
-            int dialogButton = JOptionPane.YES_NO_OPTION;
-            int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this file?", "Warning", dialogButton);
-            if (dialogResult == JOptionPane.YES_OPTION) {
-                deleteController.deleteFile(filePathTextField.getText());
-            } else {
-                this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "File not found!", JOptionPane.ERROR_MESSAGE);
+            newDeleteCommandController.perform();
+        } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
         rootFileTree.updateUI();
         ClearTableAddTableDetails();
@@ -789,20 +809,15 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
+        DeleteCommandController newDeleteCommandController = new DeleteCommandController(filePathTextField.getText());
         try {
-            DeleteFileController deleteController = new DeleteFileController(new FileOperations());
-            int dialogButton = JOptionPane.YES_NO_OPTION;
-            int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this file?", "Warning", dialogButton);
-            if (dialogResult == JOptionPane.YES_OPTION) {
-                deleteController.deleteFile(filePathTextField.getText());
-            } else {
-                this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "File not found!", JOptionPane.ERROR_MESSAGE);
+            newDeleteCommandController.perform();
+        } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
         rootFileTree.updateUI();
         ClearTableAddTableDetails();
+
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private void renameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameMenuItemActionPerformed
@@ -840,18 +855,13 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_pasteMenuItemMouseReleased
 
     private void deleteMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMenuItemMouseReleased
+        DeleteCommandController newDeleteCommandController = new DeleteCommandController(filePathTextField.getText());
         try {
-            DeleteFileController deleteController = new DeleteFileController(new FileOperations());
-            int dialogButton = JOptionPane.YES_NO_OPTION;
-            int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this file?", "Warning", dialogButton);
-            if (dialogResult == JOptionPane.YES_OPTION) {
-                deleteController.deleteFile(filePathTextField.getText());
-            } else {
-                this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "File not found!", JOptionPane.ERROR_MESSAGE);
+            newDeleteCommandController.perform();
+        } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         rootFileTree.updateUI();
         ClearTableAddTableDetails();
     }//GEN-LAST:event_deleteMenuItemMouseReleased
@@ -915,6 +925,15 @@ public class MainWindow extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_contentsMenuItemActionPerformed
+
+    private void undoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoMenuItemActionPerformed
+
+        UndoController undoController = new UndoController();
+        undoController.undo();
+
+        rootFileTree.updateUI();
+        ClearTableAddTableDetails();
+    }//GEN-LAST:event_undoMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -986,5 +1005,6 @@ public class MainWindow extends javax.swing.JFrame {
     public static javax.swing.JTree rootFileTree;
     private javax.swing.JScrollPane rootFileTreeScrollPane;
     private javax.swing.JPopupMenu tablePopupMenu;
+    private javax.swing.JMenuItem undoMenuItem;
     // End of variables declaration//GEN-END:variables
 }

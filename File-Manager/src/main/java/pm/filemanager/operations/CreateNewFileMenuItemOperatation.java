@@ -17,7 +17,7 @@ import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
 public class CreateNewFileMenuItemOperatation {
     
      public void createNewFileMenuItem(String path){
-          checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
+        checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
         boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(path);
 
         //check if is a Directory
