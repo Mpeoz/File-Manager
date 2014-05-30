@@ -16,6 +16,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import pm.filemanager.controllers.ClearTableController;
@@ -72,6 +73,19 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        //add icon button
+        
+        ImageIcon backIcon = new ImageIcon("src//main//resources//Images//backIcon.png");
+        backButton.setIcon(backIcon);
+        ImageIcon nextIcon = new ImageIcon("src//main//resources//Images//NextIcon.png");
+        nextButton.setIcon(nextIcon);
+        ImageIcon upIcon = new ImageIcon("src//main//resources//Images//UpIcon.png");
+        UpButton.setIcon(upIcon);
+        ImageIcon refreshIcon = new ImageIcon("src//main//resources//Images//RefreshIcon.png");
+        RefreshButton.setIcon(refreshIcon);
+        ImageIcon homeIcon = new ImageIcon("src//main//resources//Images//HomeIcon.png");
+        homeDirButton.setIcon(homeIcon);
+        
         //set tool tip to the buttons (hover mouse)
         backButton.setToolTipText("back");
         nextButton.setToolTipText("next");
