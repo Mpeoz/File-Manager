@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package pm.filemanager.controllers;
+package pm.filemanager.model;
 
 import java.io.IOException;
 import java.util.Stack;
@@ -33,7 +33,7 @@ public class LocalStorage {
     }
     
     public static final  boolean action(ICommand command) throws IOException {
-//       command.perform();
+
         commandsPerformed.push(command);
         return false;
         

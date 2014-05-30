@@ -1,6 +1,5 @@
 package pm.filemanager.operations;
 
-
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -23,6 +22,7 @@ import pm.filemanager.swing.MainWindow;
 public class OpenWebPageOperation {
     
     public  void openWebpage(String urlString) throws MalformedURLException, URISyntaxException {
+        
         try {
             Desktop.getDesktop().browse(new URL(urlString).toURI());
         } catch (URISyntaxException ex) {
@@ -30,7 +30,5 @@ public class OpenWebPageOperation {
         } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
-  
-}
-    
+    }   
 }

@@ -6,6 +6,7 @@
 
 package pm.filemanager.controllers;
 
+import pm.filemanager.model.LocalStorage;
 import java.io.IOException;
 import pm.filemanager.operations.ICommand;
 

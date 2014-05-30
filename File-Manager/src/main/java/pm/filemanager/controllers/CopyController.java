@@ -3,44 +3,39 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package pm.filemanager.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import org.apache.commons.io.FileUtils;
+import pm.filemanager.model.LocalStorage;
 import pm.filemanager.operations.CheckPathIfDirectoryOperation;
+import pm.filemanager.operations.CopyCommand;
 import pm.filemanager.operations.ICommand;
 
 /**
  *
- * @author alex
+ * @author PTsilopoulos
  */
-public class DeleteCommandController  {
-
-    private final String source;
-    private final String temp = System.getProperty("user.dir") + File.separator + "temp" +File.separator ;
+public class CopyController {
     
-
-    public DeleteCommandController(String source) {
+    private final String source, temp;
+    
+    public CopyController(String source) {
+        
+        this.temp = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
         this.source = source;
-                
     }
     
-    public void perform() throws IOException {
-
-        
+    public void copy() throws IOException {
+    
         CheckPathIfDirectoryOperation check = new CheckPathIfDirectoryOperation();
         boolean checkPathIfDirectory = check.checkPathIfDirectory(temp);
-         if (!checkPathIfDirectory) {
+        if (!checkPathIfDirectory) {
               (new File(temp)).mkdirs();
-         }
-        ICommand deleteCommand = new DeleteCommand(source);
-        deleteCommand.perform();
-        LocalStorage.action(deleteCommand);
-       
-
+        }
+        ICommand copyCommand = new CopyCommand(source);
+        copyCommand.perform();
+        LocalStorage.action(copyCommand);
     }
-
-   
-
 }

@@ -23,14 +23,12 @@ public class SetTreeModelOperation {
      * @param jTree JTree
      * @return JTree
      */
-    public JTree  SetTreeModel(JTree jTree){ 
-    FileTreeModel  fileSystemModel = new FileTreeModel();  
+    public JTree SetTreeModel(JTree jTree){ 
+    FileTreeModel fileSystemModel = new FileTreeModel();  
     jTree.setModel(fileSystemModel);
     jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
     jTree.setShowsRootHandles(true);
     return jTree;
-    
-    
 }
    
     

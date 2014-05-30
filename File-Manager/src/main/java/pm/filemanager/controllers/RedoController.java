@@ -6,6 +6,7 @@
 
 package pm.filemanager.controllers;
 
+import pm.filemanager.model.LocalStorage;
 import java.io.IOException;
 import pm.filemanager.operations.ICommand;
 
@@ -15,11 +16,11 @@ import pm.filemanager.operations.ICommand;
  */
 public class RedoController {
     
-    public static void redo(ICommand com) {
+    public void redo() {
         try {
             ICommand command = LocalStorage.popRedo();
             command.redo();
-        } catch (IOException e) {
+        } catch(IOException e) {
             //TO-DO add logger
         }
     }

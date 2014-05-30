@@ -232,7 +232,6 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="StatusBar" alignment="0" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
@@ -257,6 +256,10 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="StatusBar" min="-2" pref="1012" max="-2" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -279,12 +282,12 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="rootFileTableScrollPane" max="32767" attributes="0"/>
-                  <Component id="rootFileTreeScrollPane" pref="491" max="32767" attributes="0"/>
+                  <Component id="rootFileTableScrollPane" pref="531" max="32767" attributes="0"/>
+                  <Component id="rootFileTreeScrollPane" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="StatusBar" min="-2" pref="37" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+              <Component id="StatusBar" min="-2" pref="26" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -297,14 +300,11 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="//statusbar.setBorder(BorderFactory.createEtchedBorder(&#xa;       // EtchedBorder.RAISED));"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="String string = filePathTextField.getText();&#xa;Path file = new File(string).toPath();&#xa;try {&#xa;    BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);&#xa;    StatusBar.setText(&quot;creationTime: &quot; + attr.creationTime());&#xa;    // TO-DO it needs to refresh every time we change directory&#xa;} catch(IOException e) {   }"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="backButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\BackIcon.png"/>
-        </Property>
-      </Properties>
       <Events>
         <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="backButtonMouseMoved"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backButtonActionPerformed"/>
@@ -314,41 +314,21 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="nextButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\NextIcon.png"/>
-        </Property>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="UpButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\UpIcon.png"/>
-        </Property>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UpButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="RefreshButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\RefreshIcon.png"/>
-        </Property>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RefreshButtonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="homeDirButton">
-      <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\alex\Documents\NetBeansProjects\File-Manager\File-Manager\src\main\java\pm\filemanager\swing\HomeIcon.png"/>
-        </Property>
-      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="homeDirButtonActionPerformed"/>
       </Events>

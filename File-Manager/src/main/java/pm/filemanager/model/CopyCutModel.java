@@ -11,16 +11,26 @@ package pm.filemanager.model;
  * @author alex
  */
 public class CopyCutModel {
+    
     private String copyCutPath;
+    private String typeOfPaste;
 
     public String getCopyCutPath() {
         return copyCutPath;
     }
 
     public void setCopyCutPath(String copyCutPath) {
+        
         this.copyCutPath = copyCutPath;
-    }
-
-   
+    }    
     
+    public String getTypeOfPaste() {
+        
+        return typeOfPaste;
+    }
+    
+    public void setTypeOfPaste() {
+        
+        this.typeOfPaste = typeOfPaste;
+    }
 }

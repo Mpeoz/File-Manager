@@ -8,33 +8,69 @@ package pm.filemanager.operations;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
  * @author PTsilopoulos
  */
-public class FileOperations implements IFileOperations {
+public class FileOperations {
     
-    @Override
-    public boolean deleteFile(File filePath) throws IOException {
-        filePath.delete();
-        return true;
+    //private static boolean resultPaste;
+    
+    public static void deleteFile(String sourceName) throws IOException {
+        
+        File sourceFile = new File(sourceName);
+        if (sourceFile.isFile()) {
+            FileUtils.deleteQuietly(sourceFile);
+        } else {
+            FileUtils.deleteDirectory(sourceFile);
+        }
     }
     
-    @Override
-    public boolean copyPasteFile(Path source, Path dest) throws IOException {
-        Files.copy(source, dest, REPLACE_EXISTING, ATOMIC_MOVE);
-        return true;
-    }
-    
-    @Override
-    public boolean cutPasteFile(Path source, Path dest) throws IOException {
-        Files.move(source, dest, REPLACE_EXISTING, ATOMIC_MOVE);
-        return true;
+    public static void copyPasteFile(String sourceName, String destName) throws IOException {
+        
+        File sourceFile = new File(sourceName);
+        File destFile = new File(destName);
+        if (sourceFile.isFile() && destFile.isDirectory()) {
+            FileUtils.copyFileToDirectory(sourceFile, destFile);
+        } else if (sourceFile.isFile() && destFile.isFile()) {
+            FileUtils.copyFile(sourceFile, destFile);
+        } else {
+            FileUtils.copyDirectoryToDirectory(sourceFile, destFile);
+        }
+//        File checkFileExistance = new File(destName + name);
+//        resultPaste = checkFileExistance.exists();
+//        if(checkFileExistance.exists()) {
+//            resultPaste = true;
+//        }
+//        else {
+//            resultPaste = false;
+//            // TO-DO logger, exception handling
+//        }
     }     
-}
+
+    public static void cutPasteFile(String sourceName, String destName) throws IOException {
+        
+        File sourceFile = new File(sourceName);
+        File destFile = new File(destName);
+        if (sourceFile.isFile() && destFile.isDirectory()) {
+            FileUtils.copyFileToDirectory(sourceFile, destFile);
+        } else if (sourceFile.isFile() && destFile.isFile()) {
+            FileUtils.copyFile(sourceFile, destFile);
+        } else {
+            FileUtils.copyDirectoryToDirectory(sourceFile, destFile);
+        }
+        FileUtils.deleteQuietly(sourceFile);
+//        File checkFileExistance = new File(destName + name);
+//        resultPaste = checkFileExistance.exists();
+//        if(checkFileExistance.exists()) {
+//            resultPaste = true;
+//            sourceFile.delete();
+//        }
+//        else {
+//            resultPaste = false;
+//            // TO-DO logger, exception handling
+//        }
+    }   
+}    
