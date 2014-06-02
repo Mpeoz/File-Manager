@@ -7,8 +7,8 @@
 package pm.filemanager.operations;
 
 import pm.filemanager.controllers.CreateNewFolderController;
-import pm.filemanager.controllers.checkPathIfDirectoryController;
-import pm.filemanager.controllers.stringIfEndsWithSeparatorController;
+import pm.filemanager.controllers.CheckPathIfDirectoryController;
+import pm.filemanager.controllers.StringIfEndsWithSeparatorController;
 
 /**
  *
@@ -20,12 +20,12 @@ public class CreateFolderMenuItemOperatation {
      * @param path String
      */
     public void createFolderMenuItem(String path){
-         checkPathIfDirectoryController checkIfDirectory = new checkPathIfDirectoryController();
+         CheckPathIfDirectoryController checkIfDirectory = new CheckPathIfDirectoryController();
         boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(path);      
         //check if is a Directory
         if (ifDirectory) {
             //check if file and with / or not
-            stringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new stringIfEndsWithSeparatorController();
+            StringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new StringIfEndsWithSeparatorController();
             String pathForCreateFolder = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(path);
             //Create a new Folder..
             CreateNewFolderController createFolder = new CreateNewFolderController();

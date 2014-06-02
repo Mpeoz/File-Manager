@@ -20,22 +20,25 @@ public class LocalStorage {
     static Stack<ICommand> commandsUndone = new Stack<>();
     
     public static ICommand popUndo() {
+        
         ICommand command = commandsPerformed.pop();
         commandsUndone.push(command);
         return command;
     }
     
     public static ICommand popRedo() {
+        
         if (!commandsUndone.isEmpty()) {
-             return commandsUndone.pop();
+            ICommand command = commandsUndone.pop();
+            commandsPerformed.push(command);
+            return command;
         }
         return null;
     }
     
-    public static final  boolean action(ICommand command) throws IOException {
+    public static final boolean action(ICommand command) throws IOException {
 
         commandsPerformed.push(command);
         return false;
-        
     }
 }

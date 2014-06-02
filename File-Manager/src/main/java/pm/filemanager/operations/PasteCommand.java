@@ -50,7 +50,7 @@ public class PasteCommand implements ICommand {
                 }
             case "cut-paste":
                 {
-                    FileOperations.cutPasteFile(temp + fileName, destination);
+                    FileOperations.copyPasteFile(temp + fileName, destination);
                     break;
                 }
             default:

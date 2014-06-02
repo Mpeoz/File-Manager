@@ -8,6 +8,8 @@ package pm.filemanager.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import javax.swing.event.TreeModelEvent;
+import pm.filemanager.model.FileTreeModel;
 import pm.filemanager.model.LocalStorage;
 import pm.filemanager.operations.CheckPathIfDirectoryOperation;
 import pm.filemanager.operations.CutCommand;
@@ -20,11 +22,15 @@ import pm.filemanager.operations.ICommand;
 public class CutController {
     
     private final String source, temp;
+    private final FileTreeModel model;
+    private final TreeModelEvent event;
     
-    public CutController(String source) {
+    public CutController(FileTreeModel model, TreeModelEvent event, String source) {
         
         this.temp = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
         this.source = source;
+        this.model = model;
+        this.event = event;
     }
     
     public void cut() throws IOException {
@@ -32,10 +38,11 @@ public class CutController {
         CheckPathIfDirectoryOperation check = new CheckPathIfDirectoryOperation();
         boolean checkPathIfDirectory = check.checkPathIfDirectory(temp);
         if (!checkPathIfDirectory) {
-              (new File(temp)).mkdirs();
+            (new File(temp)).mkdirs();
         }
         ICommand cutCommand = new CutCommand(source);
         cutCommand.perform();
         LocalStorage.action(cutCommand);
+        model.deleteEntry(event);
     }
 }

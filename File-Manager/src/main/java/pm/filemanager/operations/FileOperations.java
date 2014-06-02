@@ -56,7 +56,7 @@ public class FileOperations {
         File destFile = new File(destName);
         if (sourceFile.isFile() && destFile.isDirectory()) {
             FileUtils.copyFileToDirectory(sourceFile, destFile);
-        } else if (sourceFile.isFile() && destFile.isFile()) {
+        } else if (sourceFile.isFile()) {
             FileUtils.copyFile(sourceFile, destFile);
         } else {
             FileUtils.copyDirectoryToDirectory(sourceFile, destFile);

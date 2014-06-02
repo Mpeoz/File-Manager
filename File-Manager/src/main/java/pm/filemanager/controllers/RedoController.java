@@ -16,12 +16,11 @@ import pm.filemanager.operations.ICommand;
  */
 public class RedoController {
     
-    public void redo() {
+    public void redo() throws NullPointerException {
         try {
             ICommand command = LocalStorage.popRedo();
             command.redo();
         } catch(IOException e) {
-            //TO-DO add logger
         }
     }
 }

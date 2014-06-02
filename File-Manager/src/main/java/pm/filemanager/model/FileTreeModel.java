@@ -8,11 +8,8 @@ package pm.filemanager.model;
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
@@ -45,7 +42,22 @@ public class FileTreeModel implements TreeModel {
         return root;
 
     }
-
+    
+    public void updateEntry(TreeModelEvent event) {
+        
+        this.fireTreeNodesChanged(event);
+    }
+    
+    public void createEntry(TreeModelEvent event) {
+        
+        this.fireTreeNodesInserted(event);
+    }
+    
+    public void deleteEntry(TreeModelEvent event) {
+        
+        this.fireTreeNodesRemoved(event);   
+    }
+    
     public Object getChild(Object parent, int index) {
         // Check if this call is on our root string, if so, feed it an instance from the fRoots File object array  
         if (parent instanceof String) {
@@ -157,31 +169,25 @@ public class FileTreeModel implements TreeModel {
     }
 
           public void fireTreeNodesInserted(TreeModelEvent l) {  
+              
             Enumeration listenerCount = listeners.elements();  
             while (listenerCount.hasMoreElements()) {  
                
-                     TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
-              listener.treeNodesInserted(l); 
-                
+              TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
+              listener.treeNodesInserted(l);  
             }
-              
-              
           }  
   
           public void fireTreeNodesRemoved(TreeModelEvent l) {  
+              
             Enumeration listenerCount = listeners.elements(); 
-            
-               while (listenerCount.hasMoreElements()) {  
-                   
+            while (listenerCount.hasMoreElements()) {  
                
               TreeModelListener listener = (TreeModelListener) listenerCount.nextElement();  
-              listener.treeNodesRemoved(l);  
-                   
-            
-          }
-            
-  
+              listener.treeNodesRemoved(l);    
+            }
           }  
+          
     public void fireTreeNodesChanged(TreeModelEvent l) {
         Enumeration listenerCount = listeners.elements();
 

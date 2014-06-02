@@ -8,21 +8,27 @@ package pm.filemanager.controllers;
 import pm.filemanager.model.LocalStorage;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.event.TreeModelEvent;
+import pm.filemanager.model.FileTreeModel;
 import pm.filemanager.operations.CheckPathIfDirectoryOperation;
 import pm.filemanager.operations.ICommand;
 
 /**
  *
- * @author alex
+ * @author PTsilopoulos
  */
 public class DeleteController {
 
     private final String source, temp;
+    private final FileTreeModel model;
+    private final TreeModelEvent event;
     
-    public DeleteController(String source) {
+    public DeleteController(FileTreeModel model, TreeModelEvent event, String source) {
         
         this.temp = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
         this.source = source;  
+        this.model = model;
+        this.event = event;
     }
     
     public void delete() throws IOException {
@@ -35,5 +41,6 @@ public class DeleteController {
         ICommand deleteCommand = new DeleteCommand(source);
         deleteCommand.perform();
         LocalStorage.action(deleteCommand);
+        model.deleteEntry(event);
     }
 }

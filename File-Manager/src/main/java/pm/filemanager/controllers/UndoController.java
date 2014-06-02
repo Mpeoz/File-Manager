@@ -16,7 +16,7 @@ import pm.filemanager.operations.ICommand;
  */
 public class UndoController {
     
-    public void undo() {
+    public void undo() throws NullPointerException {
         try {
             ICommand command = LocalStorage.popUndo();
             command.undo();
@@ -24,6 +24,4 @@ public class UndoController {
             //TO-DO add logger
         }
     }
-    
-   
 }    
