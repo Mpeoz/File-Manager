@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import pm.filemanager.controllers.ChangeDirectoryController;
 import pm.filemanager.controllers.ClearTableController;
 import pm.filemanager.controllers.CopyController;
 import pm.filemanager.controllers.CreateFileController;
@@ -32,6 +33,7 @@ import pm.filemanager.controllers.UndoController;
 import pm.filemanager.controllers.SetTableFileDetailsController;
 import pm.filemanager.controllers.CreateFolderController;
 import pm.filemanager.model.CopyCutModel;
+import pm.filemanager.model.DirectoriesNavigationModel;
 import pm.filemanager.model.FileTreeModel;
 import pm.filemanager.model.PathModel;
 import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
@@ -55,6 +57,9 @@ public class MainWindow extends javax.swing.JFrame {
     CopyCutModel copyCut = new CopyCutModel();
     //paste String type 
     String pasteType = "";
+    
+    //new Dir Nav model
+    DirectoriesNavigationModel dirNav = new DirectoriesNavigationModel();
 
     /**
      * Creates new form mainWindow
@@ -620,7 +625,15 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
 
-        undoController.undo();
+        // TO-DO refactor se actionListener
+        ChangeDirectoryController changeDir = new ChangeDirectoryController(filePathTextField.getText());
+        File currentFile = new File(filePathTextField.getText());
+        if(currentFile.exists()) {        
+            String parentDir = currentFile.getParent();
+            filePathTextField.setText(parentDir);
+            dirNav.setChildrenPath(parentDir);
+        }
+        //undoController.undo();
         ClearTableAddTableDetails();
     }//GEN-LAST:event_backButtonActionPerformed
 
