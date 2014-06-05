@@ -8,9 +8,12 @@ package pm.filemanager.swing;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import pm.filemanager.controllers.CorrectNameController;
 import pm.filemanager.controllers.CorrectTxtNameController;
-import pm.filemanager.controllers.RenameAFileController;
+import pm.filemanager.controllers.RenameController;
 
 /**
  *
@@ -134,21 +137,25 @@ boolean resultCorrectTxtName;
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
 
-        RenameAFileController renameAFile = new RenameAFileController();
+        RenameController renameAFile = new RenameController(oldPathTextField.getText().toString(), newNameTextField.getText().toString());
         File pathFile = new File(oldPathTextField.getText().toString());
-        if(pathFile.exists()){
-            if(renameAFile.RenameAFile(oldPathTextField.getText().toString(), newNameTextField.getText().toString())){
-             anncoumentLabel.setText("Success");
-             anncoumentLabel.setForeground(Color.green);
-             }else{
-                anncoumentLabel.setText("faild to rename");
-             anncoumentLabel.setForeground(Color.red);
+        if(pathFile.exists()) {
+            try {
+                if(!renameAFile.rename()) {
+                    anncoumentLabel.setText("Faild to rename!");
+                    anncoumentLabel.setForeground(Color.red);
+                } else {
+                    anncoumentLabel.setText("Success");
+                    anncoumentLabel.setForeground(Color.green);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(RenameForm.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else{
-            System.out.println("Cant rename a noexist file");
+        } else {
+            System.out.println("The file does not exist!");
         }
-         MainWindow.rootFileTree.updateUI();
-         this.dispose();
+        MainWindow.rootFileTree.updateUI();
+        this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void newNameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newNameTextFieldKeyPressed

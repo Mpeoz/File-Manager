@@ -7,8 +7,8 @@ package pm.filemanager.controllers;
 
 import java.io.IOException;
 import pm.filemanager.model.LocalStorage;
-import pm.filemanager.operations.ICommand;
-import pm.filemanager.operations.PasteCommand;
+import pm.filemanager.commands.ICommand;
+import pm.filemanager.commands.PasteCommand;
 
 /**
  *

@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -22,23 +21,19 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import pm.filemanager.controllers.ClearTableController;
 import pm.filemanager.controllers.CopyController;
+import pm.filemanager.controllers.CreateFileController;
 import pm.filemanager.controllers.CutController;
 import pm.filemanager.controllers.DeleteController;
 import pm.filemanager.controllers.OpenWebPageController;
 import pm.filemanager.controllers.PasteController;
-import pm.filemanager.controllers.PushWhenValueChangedController;
 import pm.filemanager.controllers.RedoController;
 import pm.filemanager.controllers.SetFileTreeController;
 import pm.filemanager.controllers.UndoController;
 import pm.filemanager.controllers.SetTableFileDetailsController;
-import pm.filemanager.controllers.CreateFolderMenuItemController;
-import pm.filemanager.controllers.StringIfEndsWithSeparatorController;
+import pm.filemanager.controllers.CreateFolderController;
 import pm.filemanager.model.CopyCutModel;
 import pm.filemanager.model.FileTreeModel;
 import pm.filemanager.model.PathModel;
-import pm.filemanager.model.StackModel;
-import pm.filemanager.operations.CreateNewFileMenuItemOperatation;
-import pm.filemanager.operations.StackPushOperation;
 import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
 import pm.filemanager.validators.RemoveLastSeparatorValidator;
 
@@ -51,17 +46,8 @@ public class MainWindow extends javax.swing.JFrame {
     SetFileTreeController setFileTreeController = new SetFileTreeController();
     FileTreeModel rootFileModel = null;
     PathModel newPathModel = new PathModel();
-    StackPushOperation newStackPush = new StackPushOperation();
-    StackModel newStack = new StackModel();
-    //stack for pop
-    Stack<String> stackPop = new Stack<String>();
-    //stack for prev
-    Stack<String> stackPrev = new Stack<String>();
-    //push when value changed
-    PushWhenValueChangedController pushWhenValueChanged = new PushWhenValueChangedController();
-    private int countStack;
-    private int countStackPov;
-    private int countStackPrev;
+    
+    
     UndoController undoController = new UndoController();
     RedoController redoController = new RedoController();
 
@@ -606,8 +592,13 @@ public class MainWindow extends javax.swing.JFrame {
      */
     private void createFolderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderMenuItemActionPerformed
         
-        CreateFolderMenuItemController createFolder = new CreateFolderMenuItemController();
-        createFolder.createFolderMenuItem(filePathTextField.getText().toString());
+        int count = 0;
+        CreateFolderController newFolder = new CreateFolderController(filePathTextField.getText(), count);
+        try {
+            newFolder.createFolder();
+        } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ClearTableAddTableDetails();
         rootFileTree.updateUI();
     }//GEN-LAST:event_createFolderMenuItemActionPerformed
@@ -649,8 +640,13 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void createTextDocumentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTextDocumentMenuItemActionPerformed
         
-        CreateNewFileMenuItemOperatation newCreateNewFile = new CreateNewFileMenuItemOperatation();
-        newCreateNewFile.createNewFileMenuItem(filePathTextField.getText().toString());
+        int count = 0;
+        CreateFileController createNewFile = new CreateFileController(filePathTextField.getText().toString(), count);
+        try {
+            createNewFile.createFile();
+        } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ClearTableAddTableDetails();
         rootFileTree.updateUI();
     }//GEN-LAST:event_createTextDocumentMenuItemActionPerformed
@@ -707,35 +703,9 @@ public class MainWindow extends javax.swing.JFrame {
      * @param evt
      */
     private void fileDetailsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileDetailsTableMouseClicked
-        StringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new StringIfEndsWithSeparatorController();
-        String nowPath = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(filePathTextField.getText().toString());
-
-        if (!(fileDetailsTable.getSelectedRow() < 0)) {
-            String nameOfFile = fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(), 0).toString();
-            filePathTextField.setText("");
-            String path = newPathModel.getPath().toString() + nameOfFile + "\\";
-            File file = new File(path);
-            //check if file exist with now path   
-            if (file.exists()) {
-                filePathTextField.setText(path);
-                PushWhenValueChangedController newPushWhenValueChanged = new PushWhenValueChangedController();
-                String pathForNode = newPathModel.getPath().toString() + fileDetailsTable.getValueAt(fileDetailsTable.getSelectedRow(), 0) + "\\";
-                try {
-                    newPushWhenValueChanged.stackPush(newStackPush, stackPop, stackPrev, pathForNode);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                countStack++;
-                countStackPov++;
-                countStackPrev++;
-            } else {
-                filePathTextField.setText(nowPath);
-
-            }
-
-        } else {
-            fileDetailsTable.setRowSelectionInterval(0, 0);
-        }
+        
+        
+        
         ClearTableAddTableDetails();
         rootFileTree.updateUI();
     }//GEN-LAST:event_fileDetailsTableMouseClicked

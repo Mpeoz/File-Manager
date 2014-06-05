@@ -11,9 +11,9 @@ import java.io.IOException;
 import javax.swing.event.TreeModelEvent;
 import pm.filemanager.model.FileTreeModel;
 import pm.filemanager.model.LocalStorage;
-import pm.filemanager.operations.CheckPathIfDirectoryOperation;
-import pm.filemanager.operations.CutCommand;
-import pm.filemanager.operations.ICommand;
+import pm.filemanager.commands.CutCommand;
+import pm.filemanager.commands.ICommand;
+import pm.filemanager.operations.FileOperations;
 
 /**
  *
@@ -35,10 +35,8 @@ public class CutController {
     
     public void cut() throws IOException {
     
-        CheckPathIfDirectoryOperation check = new CheckPathIfDirectoryOperation();
-        boolean checkPathIfDirectory = check.checkPathIfDirectory(temp);
-        if (!checkPathIfDirectory) {
-            (new File(temp)).mkdirs();
+        if (FileOperations.checkDirectory(temp) == true) {
+              (new File(temp)).mkdirs();
         }
         ICommand cutCommand = new CutCommand(source);
         cutCommand.perform();

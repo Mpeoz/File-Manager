@@ -4,12 +4,12 @@
  * and open the template in the editor.
  */
 
-package pm.filemanager.enums;
+package pm.filemanager.listeners;
 
 /**
- *  enum CutCopyEnum
- * @author alex
+ *
+ * @author Enlightened
  */
-public enum CutCopyEnum {
-    CUT,COPY;
+public class Mediator {
+    
 }

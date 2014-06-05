@@ -18,31 +18,30 @@ import java.nio.file.Paths;
 public class CreateNewFileOperation {
 
     /**
-     * public boolean function CreateNewFile
+     * public boolean function createNewFile
      *
      * @param path String
      * @param countFileExist integer
      * @return true if file is created and false if is not
      */
-    public boolean CreateNewFile(String path, int countFileExist) {
+    public boolean createNewFile(String path, int countFileExist) {
+        
         Path xPath = Paths.get(path + "testfile" + countFileExist + ".txt");
-        boolean checkIfExistDir = false;
-        checkIfExistDir = Files.exists(xPath);
+        //boolean checkIfExistDir = false;
+        boolean checkIfExistDir = Files.exists(xPath);
         //check if exist 
         if (checkIfExistDir) {
             countFileExist = countFileExist + 1;
-            boolean resultIfExistName = CreateNewFile(path, countFileExist);
+            boolean resultIfExistName = createNewFile(path, countFileExist);
             return resultIfExistName;
         }
         try {
-
             File myFile = new File(path + "testfile" + countFileExist + ".txt");
             return myFile.createNewFile();
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            
         }
         return false;
-
     }
 
 }

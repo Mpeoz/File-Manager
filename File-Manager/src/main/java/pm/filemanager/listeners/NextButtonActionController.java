@@ -4,12 +4,16 @@
  * and open the template in the editor.
  */
 
-package pm.filemanager.actions;
+package pm.filemanager.listeners;
+
+import javax.swing.JTextField;
 
 /**
  *
- * @author Enlightened
+ * @author alex
  */
-public class ActionListener {
+public class NextButtonActionController {
+    
+    
     
 }

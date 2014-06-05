@@ -8,7 +8,14 @@ package pm.filemanager.operations;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
+import pm.filemanager.commands.RenameCommand;
 
 /**
  *
@@ -73,4 +80,52 @@ public class FileOperations {
 //            // TO-DO logger, exception handling
 //        }
     }   
+    
+    public static void moveFolder(String source, String destination) throws IOException {
+        
+        Path sourcePath = Paths.get(source);
+        Path targetPath = Paths.get(destination, source);
+        try {
+            Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.out.println("You must select a valid directory to move the folder into!");
+        }
+    }
+    
+    /**
+     * boolean function RenameAFile
+     * @param path String
+     * @param nameOfFile String
+     */
+    public static void renameFile(String path, String nameOfFile) {
+        
+        Path source = Paths.get(path);
+        try {
+            Files.move(source, source.resolveSibling(nameOfFile));
+        } catch (IOException ex) {
+            Logger.getLogger(RenameCommand.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static boolean createFolder(String path) throws IOException {
+        
+//        FileSeparatorValidator fileChecker = new FileSeparatorValidator(path);
+//        String newFolderPath = fileChecker.removeFileSeparator();
+        
+        if(checkDirectory(path) == true) {
+            File folder = new File(path);
+            folder.mkdirs();
+            System.out.println("Directory Created");
+            return true;    
+        } else {
+            System.out.println("You must select a valid directory to create a new folder into!");
+            return false;
+        }
+    }
+    
+    public static boolean checkDirectory(String path) {
+        
+        File file = new File(path);
+        return file.isDirectory();
+    }
 }    

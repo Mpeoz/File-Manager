@@ -5,13 +5,14 @@
  */
 package pm.filemanager.controllers;
 
+import pm.filemanager.commands.DeleteCommand;
 import pm.filemanager.model.LocalStorage;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.event.TreeModelEvent;
 import pm.filemanager.model.FileTreeModel;
-import pm.filemanager.operations.CheckPathIfDirectoryOperation;
-import pm.filemanager.operations.ICommand;
+import pm.filemanager.commands.ICommand;
+import pm.filemanager.operations.FileOperations;
 
 /**
  *
@@ -33,9 +34,7 @@ public class DeleteController {
     
     public void delete() throws IOException {
         
-        CheckPathIfDirectoryOperation check = new CheckPathIfDirectoryOperation();
-        boolean checkPathIfDirectory = check.checkPathIfDirectory(temp);
-        if (!checkPathIfDirectory) {
+        if (FileOperations.checkDirectory(temp) == true) {
               (new File(temp)).mkdirs();
         }
         ICommand deleteCommand = new DeleteCommand(source);

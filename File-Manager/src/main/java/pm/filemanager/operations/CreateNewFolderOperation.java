@@ -17,39 +17,30 @@ import java.nio.file.Paths;
  */
 public class CreateNewFolderOperation {
 
-    protected int countFileExist = 0;
+    protected static int countFileExist = 0;
     String finalPath = "";
 
     /**
-     * public boolean createNewFolderOperation
+     * public boolean createNewFolder
      *
      * @param path String
      * @param count integer
      * @return true if folder is created or false if is not
      */
-    public boolean createNewFolderOperation(String path, int count) {
+    public static void createNewFolder(String path, int count) {
 
-        Path xPath = Paths.get(path + "newFolder" + count);
-        boolean checkIfExistDir = false;
-
-        checkIfExistDir = Files.exists(xPath);
-        //check if exist 
-        if (checkIfExistDir) {
-            countFileExist = countFileExist + 1;
-            boolean resultIfExistName = createNewFolderOperation(path, countFileExist);
-            return resultIfExistName;
+            Path dPath = Paths.get(path + "New Folder" + count);
+            
+            boolean checkIfExistDir = Files.exists(dPath);
+            //check if exist 
+            if (checkIfExistDir) {
+                countFileExist = countFileExist + 1;
+                createNewFolder(path, countFileExist);
+            }
+            try {
+                Files.createDirectory(dPath);
+            } catch (IOException e) {
+                System.out.println("Could not create Directory");
         }
-        try {
-            Files.createDirectory(xPath);
-            //Files.delete();
-            return true;
-
-        } catch (IOException e) {
-            System.out.println("Could not create Directory");
-            return false;
-
-        }
-
     }
-
 }

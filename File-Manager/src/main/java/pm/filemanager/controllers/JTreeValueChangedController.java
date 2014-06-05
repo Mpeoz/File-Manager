@@ -8,7 +8,7 @@ package pm.filemanager.controllers;
 
 import javax.swing.JTextField;
 import javax.swing.JTree;
-import pm.filemanager.actions.JTreeValueChangedListener;
+import pm.filemanager.listeners.JTreeValueChangedListener;
 
 /**
  *

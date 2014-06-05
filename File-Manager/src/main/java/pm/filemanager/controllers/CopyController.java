@@ -9,9 +9,9 @@ package pm.filemanager.controllers;
 import java.io.File;
 import java.io.IOException;
 import pm.filemanager.model.LocalStorage;
-import pm.filemanager.operations.CheckPathIfDirectoryOperation;
-import pm.filemanager.operations.CopyCommand;
-import pm.filemanager.operations.ICommand;
+import pm.filemanager.commands.CopyCommand;
+import pm.filemanager.commands.ICommand;
+import pm.filemanager.operations.FileOperations;
 
 /**
  *
@@ -29,9 +29,7 @@ public class CopyController {
     
     public void copy() throws IOException {
     
-        CheckPathIfDirectoryOperation check = new CheckPathIfDirectoryOperation();
-        boolean checkPathIfDirectory = check.checkPathIfDirectory(temp);
-        if (!checkPathIfDirectory) {
+        if (FileOperations.checkDirectory(temp) == true) {
               (new File(temp)).mkdirs();
         }
         ICommand copyCommand = new CopyCommand(source);

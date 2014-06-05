@@ -3,32 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-package pm.filemanager.operations;
+package pm.filemanager.commands;
 
 import java.io.File;
 import java.io.IOException;
+import pm.filemanager.operations.FileOperations;
+import pm.filemanager.commands.ICommand;
 
 /**
  *
  * @author PTsilopoulos
  */
-public class CopyCommand implements ICommand {
-    
-    private final String source, fileName;
+public class DeleteCommand implements ICommand {
+
+    private final String source, filepath, filename;
     private final String temp = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
 
-    public CopyCommand(String source) {
+    public DeleteCommand(String source) {
         
         this.source = source;
         File myFile = new File(source);
-        fileName = myFile.getName();
+        filename = myFile.getName();
+        filepath = myFile.getPath();
     }
-
+    
     @Override
     public void undo() throws IOException {
         
-        FileOperations.cutPasteFile(temp + fileName, source);
+        FileOperations.cutPasteFile(temp + filename, filepath);
     }
 
     @Override
@@ -40,6 +42,6 @@ public class CopyCommand implements ICommand {
     @Override
     public void perform() throws IOException {
         
-        FileOperations.copyPasteFile(source, temp);
+        FileOperations.cutPasteFile(source, temp);
     }
 }

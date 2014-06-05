@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package pm.filemanager.actions;
+package pm.filemanager.listeners;
 
 import javax.swing.JTextField;
 import javax.swing.JTree;

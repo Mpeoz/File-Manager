@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package pm.filemanager.operations;
+package pm.filemanager.commands;
 
 import java.io.IOException;
 

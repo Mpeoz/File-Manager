@@ -9,43 +9,43 @@ package pm.filemanager.validators;
  *
  * @author alex
  */
-public class StringIfEndsorNoWithSeparatorValidator {
+public class FileSeparatorValidator {
+    
+    private final String name;
+
+    public FileSeparatorValidator(String name) {
+        
+        this.name = name;
+    }
+    
 /**
  * public String checkIfStringEndWithSeparator
  * @param name String
  * @return a String with Separator in end if exist or not
  */
-    public String checkIfStringEndWithSeparator(String name) {
+    public String addFileSeparator() {
 
         String resultPathForCreateFolder;
 
         if (name.endsWith("\\")) {
-
             resultPathForCreateFolder = name;
-
         } else {
-            resultPathForCreateFolder = name+ "\\";
-
+            resultPathForCreateFolder = name + "\\";
         }
-
         return resultPathForCreateFolder;
     }
     //TODO:TEST FUNCTION for PropertiesForm
-    public String checkIfStringNoEndWithSeparator(String name) {
+    public String removeFileSeparator() {
 
         String resultPathForCreateFolder;
 
         if (name.endsWith("\\")) {
-
             resultPathForCreateFolder = name.replaceAll("$//", " ");
             System.out.println(resultPathForCreateFolder);
-
         } else {
             resultPathForCreateFolder = name;
             System.out.println(resultPathForCreateFolder);
-
         }
-
         return resultPathForCreateFolder;
     }
 }

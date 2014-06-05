@@ -12,11 +12,11 @@ package pm.filemanager.validators;
 public class RemoveLastSeparatorValidator {
 
     public String removeLastSeparator(String name) {
-        StringIfEndsorNoWithSeparatorValidator stringIfEndsorNoWithSeparator = new StringIfEndsorNoWithSeparatorValidator();
-        String path = stringIfEndsorNoWithSeparator.checkIfStringNoEndWithSeparator(name);
-        path = name.replaceAll("\\\\.*$", "");
-
-        path = stringIfEndsorNoWithSeparator.checkIfStringEndWithSeparator(path);
+        
+        FileSeparatorValidator looksLikeFile = new FileSeparatorValidator(name);
+        String path = looksLikeFile.removeFileSeparator();
+        path = path.replaceAll("\\\\.*$", "");
+        //path = looksLikeFile.removeFileSeparator();
         return path;
     }
 }

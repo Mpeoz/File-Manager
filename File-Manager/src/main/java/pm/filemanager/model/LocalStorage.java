@@ -8,7 +8,7 @@ package pm.filemanager.model;
 
 import java.io.IOException;
 import java.util.Stack;
-import pm.filemanager.operations.ICommand;
+import pm.filemanager.commands.ICommand;
 
 /**
  *
