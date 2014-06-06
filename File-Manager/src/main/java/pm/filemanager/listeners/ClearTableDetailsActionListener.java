@@ -12,7 +12,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.util.logging.Level;
@@ -49,7 +48,7 @@ public class ClearTableDetailsActionListener extends JFrame implements KeyListen
         if (isClear) {
             //check if show all file details
             try {
-                newTableFileDetailsController.setTableFileDetailsController(fileDetailsTable, filePathTextField.getText().toString());
+                newTableFileDetailsController.SetTableFileDetails(fileDetailsTable, filePathTextField.getText().toString());
             } catch (Exception e) {
                 try {
                     throw e;
