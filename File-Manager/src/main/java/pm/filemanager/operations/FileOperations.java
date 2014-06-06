@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
 import pm.filemanager.commands.RenameCommand;
+import pm.filemanager.model.DirectoriesNavigationModel;
 
 /**
  *
@@ -62,13 +63,14 @@ public class FileOperations {
         File sourceFile = new File(sourceName);
         File destFile = new File(destName);
         if (sourceFile.isFile() && destFile.isDirectory()) {
-            FileUtils.copyFileToDirectory(sourceFile, destFile);
+            FileUtils.moveFileToDirectory(sourceFile, destFile, false);
         } else if (sourceFile.isFile()) {
-            FileUtils.copyFile(sourceFile, destFile);
+            FileUtils.moveFile(sourceFile, destFile);
         } else {
-            FileUtils.copyDirectoryToDirectory(sourceFile, destFile);
+            //destFile.mkdir();
+            FileUtils.moveDirectoryToDirectory(sourceFile, destFile, false);
         }
-        FileUtils.deleteQuietly(sourceFile);
+        //FileUtils.deleteQuietly(sourceFile); // ZOMG it deletes EVERYTHING!!!
 //        File checkFileExistance = new File(destName + name);
 //        resultPaste = checkFileExistance.exists();
 //        if(checkFileExistance.exists()) {
@@ -127,5 +129,17 @@ public class FileOperations {
         
         File file = new File(path);
         return file.isDirectory();
+    }
+    
+    public static String goBack(String currentPath) {
+        
+        DirectoriesNavigationModel dirNav = new DirectoriesNavigationModel();
+        File currentFile = new File(currentPath);
+        if(currentFile.exists()) {        
+            String parentPath = currentFile.getParent();
+            dirNav.setParentsPath(parentPath);
+            return dirNav.getParentPath();
+        }
+        return null;
     }
 }    

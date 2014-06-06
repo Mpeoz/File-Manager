@@ -21,25 +21,25 @@ import pm.filemanager.operations.FileOperations;
 public class DeleteController {
 
     private final String source, temp;
-    private final FileTreeModel model;
-    private final TreeModelEvent event;
+//    private final FileTreeModel model;
+//    private final TreeModelEvent event;
     
-    public DeleteController(FileTreeModel model, TreeModelEvent event, String source) {
+    public DeleteController(String source) {
         
         this.temp = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
         this.source = source;  
-        this.model = model;
-        this.event = event;
+//        this.model = model;
+//        this.event = event;
     }
     
     public void delete() throws IOException {
         
-        if (FileOperations.checkDirectory(temp) == true) {
+        if (FileOperations.checkDirectory(temp) != true) {
               (new File(temp)).mkdirs();
         }
         ICommand deleteCommand = new DeleteCommand(source);
         deleteCommand.perform();
         LocalStorage.action(deleteCommand);
-        model.deleteEntry(event);
+        //model.deleteEntry(event);
     }
 }

@@ -29,7 +29,7 @@ public class CreateNewFolderOperation {
      */
     public static void createNewFolder(String path, int count) {
 
-            Path dPath = Paths.get(path + "New Folder" + count);
+            Path dPath = Paths.get(path + "NewFolder" + count);
             
             boolean checkIfExistDir = Files.exists(dPath);
             //check if exist 

@@ -11,8 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import pm.filemanager.controllers.CorrectNameController;
-import pm.filemanager.controllers.CorrectTxtNameController;
 import pm.filemanager.controllers.RenameController;
 
 /**

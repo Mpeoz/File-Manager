@@ -27,7 +27,7 @@ public class CreateFileCommand implements ICommand {
 
     @Override
     public void undo() throws IOException {
-        FileOperations.moveFolder(source, temp);
+        FileOperations.cutPasteFile(source, temp);
     }
 
     @Override

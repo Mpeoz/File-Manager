@@ -8,6 +8,7 @@ package pm.filemanager.commands;
 
 import java.io.File;
 import java.io.IOException;
+import pm.filemanager.operations.FileOperations;
 
 /**
  *
@@ -16,7 +17,7 @@ import java.io.IOException;
 public class ChangeDirectoryCommand implements ICommand {
 
     private final String currentPath;
-    private String previousPath, nextPath;
+    private String parentPath, nextPath;
     
     public ChangeDirectoryCommand(String currentPath) {
         
@@ -38,11 +39,6 @@ public class ChangeDirectoryCommand implements ICommand {
     @Override
     public void perform() throws IOException {
         
-        File currentFile = new File(currentPath);
-        if(currentFile.exists()) {        
-            
-            previousPath = currentFile.getParent();
-            
-        }    
+        parentPath = FileOperations.goBack(currentPath);
     } 
 }

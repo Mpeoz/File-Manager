@@ -29,7 +29,7 @@ public class CopyController {
     
     public void copy() throws IOException {
     
-        if (FileOperations.checkDirectory(temp) == true) {
+        if (FileOperations.checkDirectory(temp) != true) {
               (new File(temp)).mkdirs();
         }
         ICommand copyCommand = new CopyCommand(source);

@@ -188,7 +188,7 @@ public class PropertiesForm extends javax.swing.JFrame {
     }//GEN-LAST:event_createdTextFieldActionPerformed
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-      this.dispose();
+        this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
     /**

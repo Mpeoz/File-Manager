@@ -27,11 +27,7 @@ public class ChangeDirectoryController {
     
     public void changeDirectory(String filePath) throws IOException {
      
-        File currentFile = new File(filePath);
-        if(currentFile.exists()) {   
-            
-            
-        } 
+        
         ICommand ChangeDirectoryCommand = new ChangeDirectoryCommand(filePath);
         ChangeDirectoryCommand.perform();
         LocalStorage.action(ChangeDirectoryCommand);
