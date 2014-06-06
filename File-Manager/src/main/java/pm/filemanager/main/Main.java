@@ -18,9 +18,9 @@ public class Main
     {
            MainWindow theView = new MainWindow();
        try {
-            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+           // UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
            
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
              SwingUtilities.updateComponentTreeUI(theView);
              MainWindow.setDefaultLookAndFeelDecorated(true);
            

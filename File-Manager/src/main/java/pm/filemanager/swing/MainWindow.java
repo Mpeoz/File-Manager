@@ -99,15 +99,18 @@ public class MainWindow extends javax.swing.JFrame {
         pasteMenuItem.setIcon(pasteIcon);
         ImageIcon undoIcon = new ImageIcon("src//main//resources//Images//undo-icon.png");
         undoButton.setIcon(undoIcon);
+        undoMenuItem.setIcon(undoIcon);
         ImageIcon redoIcon = new ImageIcon("src//main//resources//Images//redo-icon.png");
         redoButton.setIcon(redoIcon);
 
         ImageIcon propertiesIcon = new ImageIcon("src//main//resources//Images//properties-icon.gif");
         PropertiesMenuItem.setIcon(propertiesIcon);
+        propertiesMenuItem.setIcon(propertiesIcon);
         ImageIcon exitIcon = new ImageIcon("src//main//resources//Images//exit.png");
         closeMenuItem.setIcon(exitIcon);
         ImageIcon renameIcon = new ImageIcon("src//main//resources//Images//rename.jpg");
         RenameMenuItem.setIcon(renameIcon);
+        renameMenuItem.setIcon(renameIcon);
 
         ImageIcon contentIcon = new ImageIcon("src//main//resources//Images//contentIcon.jpg");
         contentsMenuItem.setIcon(contentIcon);
