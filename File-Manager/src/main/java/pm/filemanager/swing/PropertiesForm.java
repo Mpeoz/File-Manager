@@ -30,6 +30,7 @@ public class PropertiesForm extends javax.swing.JFrame {
      */
     public PropertiesForm() {
         initComponents();
+        
         locationTextField.setEnabled(false);
         File file = new File(locationTextField.getText().toString());
         //TODO:refactor all this code too new class

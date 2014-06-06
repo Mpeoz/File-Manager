@@ -2,9 +2,10 @@ package pm.filemanager.main;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileSystemView;
 import pm.filemanager.swing.MainWindow;
 /**
  * Hello world!
@@ -12,10 +13,19 @@ import pm.filemanager.swing.MainWindow;
  */
 public class Main 
 {
+   
+    
     public static void main( String[] args )
     {
+           MainWindow theView = new MainWindow();
        try {
+            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+           
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+             SwingUtilities.updateComponentTreeUI(theView);
+             MainWindow.setDefaultLookAndFeelDecorated(true);
+           
+           
         } catch(ClassNotFoundException e) {
            try {
                throw e;
@@ -41,10 +51,8 @@ public class Main
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        MainWindow theView = new MainWindow();
-
-        MainWindow.setDefaultLookAndFeelDecorated(true);
-       
+        
+        theView.setResizable(true);
         theView.setVisible(true);
     }
 }

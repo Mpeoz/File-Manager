@@ -24,7 +24,7 @@ public class CreateNewFileOperation {
      * @param countFileExist integer
      * @return true if file is created and false if is not
      */
-    public boolean createNewFile(String path, int countFileExist) {
+    public  static boolean createNewFile(String path, int countFileExist) {
         
         Path xPath = Paths.get(path + "testfile" + countFileExist + ".txt");
         //boolean checkIfExistDir = false;

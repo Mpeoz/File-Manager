@@ -20,7 +20,6 @@ import pm.filemanager.model.LocalStorage;
 public class CreateFileController {
 
     private final String source;
-    private final String temp = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
     protected final int count;
     
     public CreateFileController(String source, int count) {
@@ -31,7 +30,7 @@ public class CreateFileController {
  
     public void createFile() throws IOException {
         
-        ICommand createFileCommand = new CreateFileCommand();
+        ICommand createFileCommand = new CreateFileCommand(source, count);
         createFileCommand.perform();
         LocalStorage.action(createFileCommand);
     }
