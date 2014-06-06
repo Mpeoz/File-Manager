@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.filechooser.FileSystemView;
 import pm.filemanager.swing.MainWindow;
 /**
  * Hello world!

@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import pm.filemanager.controllers.ClearTableController;
-import pm.filemanager.controllers.SetTableFileDetailsController;
+import pm.filemanager.controllers.setTableFileDetailsController;
 import pm.filemanager.swing.MainWindow;
 
 /**
@@ -39,7 +39,7 @@ public class ClearTableDetailsActionListener extends JFrame implements KeyListen
       //refactor se kainourgia i prepei na einai edw mesa? 
      private void ClearTableAddTableDetails() {
 
-        SetTableFileDetailsController newTableFileDetailsController = new SetTableFileDetailsController();
+        setTableFileDetailsController newTableFileDetailsController = new setTableFileDetailsController();
         //clear table
         ClearTableController clearTable = new ClearTableController();
         boolean isClear = clearTable.ClearTable(fileDetailsTable);
@@ -48,7 +48,7 @@ public class ClearTableDetailsActionListener extends JFrame implements KeyListen
         if (isClear) {
             //check if show all file details
             try {
-                newTableFileDetailsController.SetTableFileDetails(fileDetailsTable, filePathTextField.getText().toString());
+                newTableFileDetailsController.setTableFileDetailsController(fileDetailsTable, filePathTextField.getText().toString());
             } catch (Exception e) {
                 try {
                     throw e;

@@ -5,7 +5,6 @@
  */
 package pm.filemanager.swing;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -21,10 +20,8 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import pm.filemanager.controllers.ChangeDirectoryController;
 import pm.filemanager.controllers.CopyController;
 import pm.filemanager.controllers.CreateFileController;
 import pm.filemanager.controllers.CutController;
@@ -49,11 +46,11 @@ import pm.filemanager.validators.FixTreeSelectionStringtoCorrectedPathValidator;
  * @author PTsilopoulos
  */
 public class MainWindow extends javax.swing.JFrame {
-    
+
     SetFileTreeController setFileTreeController = new SetFileTreeController();
     FileTreeModel rootFileModel = null;
     PathModel newPathModel = new PathModel();
-    
+
     UndoController undoController = new UndoController();
     RedoController redoController = new RedoController();
 
@@ -64,17 +61,14 @@ public class MainWindow extends javax.swing.JFrame {
 
     //new Dir Nav model
     DirectoriesNavigationModel dirNav = new DirectoriesNavigationModel();
-    
 
     /**
      * Creates new form mainWindow
      */
     public MainWindow() {
         initComponents();
-     
-    
-         
-         //this.setResizable(true);
+
+        //this.setResizable(true);
         //add icons
         ImageIcon backIcon = new ImageIcon("src//main//resources//Images//back-icon.png");
         backButton.setIcon(backIcon);
@@ -107,7 +101,17 @@ public class MainWindow extends javax.swing.JFrame {
         undoButton.setIcon(undoIcon);
         ImageIcon redoIcon = new ImageIcon("src//main//resources//Images//redo-icon.png");
         redoButton.setIcon(redoIcon);
-       
+
+        ImageIcon propertiesIcon = new ImageIcon("src//main//resources//Images//properties-icon.gif");
+        PropertiesMenuItem.setIcon(propertiesIcon);
+        ImageIcon exitIcon = new ImageIcon("src//main//resources//Images//exit.png");
+        closeMenuItem.setIcon(exitIcon);
+        ImageIcon renameIcon = new ImageIcon("src//main//resources//Images//rename.jpg");
+        RenameMenuItem.setIcon(renameIcon);
+
+        ImageIcon contentIcon = new ImageIcon("src//main//resources//Images//contentIcon.jpg");
+        contentsMenuItem.setIcon(contentIcon);
+
         //set tool tip to the buttons (hover mouse)
         backButton.setToolTipText("Previous Folder");
         nextButton.setToolTipText("Next Folder");
@@ -116,14 +120,12 @@ public class MainWindow extends javax.swing.JFrame {
         homeDirButton.setToolTipText("Home Directory");
         undoButton.setToolTipText("Undo previous action");
         redoButton.setToolTipText("Redo previous action");
-        
-        //TODO:image button add because problems with other pc default location
-        // addd code here
+
         //set tree modelback
         rootFileTree = setFileTreeController.getFileTree(rootFileTree);
         rootFileModel = (FileTreeModel) setFileTreeController.getTreeModel(rootFileTree);
 
-        //TODO:Check how refactor this code  
+        // addTreeSelectionListener  to JTree:rootFileTree
         rootFileTree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
             public void valueChanged(TreeSelectionEvent e) {
@@ -131,42 +133,33 @@ public class MainWindow extends javax.swing.JFrame {
                 String pathForNode = newCorrectPath.FixTreeSelectionStringToCorrectedPath(e);
                 filePathTextField.setText(pathForNode);
                 newPathModel.setPath(pathForNode);
-//                try {
-//                    pushWhenValueChanged.stackPush(newStackPush, stackPop, stackPrev, pathForNode);
-//                } catch (IOException ex) {
-//                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                countStack++;
-//                countStackPov++;
-//                countStackPrev++;
 
             }
         });
         this.setDefaultCloseOperation(MainWindow.EXIT_ON_CLOSE);
-        
-        
+
+        // addCaretListener to JTextField: filePathTextField
         filePathTextField.addCaretListener(new CaretListener() {
 
             @Override
             public void caretUpdate(CaretEvent e) {
                 File file = new File(filePathTextField.getText().toString());
-          Path path = Paths.get(filePathTextField.getText().toString());
-        BasicFileAttributes attributes;
-        try {
-            attributes = Files.readAttributes(path, BasicFileAttributes.class);
-            FileTime creationTime = attributes.creationTime();
-            FileTime accessedTime = attributes.lastAccessTime();
-            Long size = attributes.size();
-            size.toString();
-             StatusBar.setText("Creation Time:"+creationTime.toString()+"  Accessed Time :"+accessedTime.toString()+"    Size:"+size+ " bytes");
-        } catch (IOException ex) {
-            Logger.getLogger(PropertiesForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
-                
+                Path path = Paths.get(filePathTextField.getText().toString());
+                BasicFileAttributes attributes;
+                try {
+                    attributes = Files.readAttributes(path, BasicFileAttributes.class);
+                    FileTime creationTime = attributes.creationTime();
+                    FileTime accessedTime = attributes.lastAccessTime();
+                    Long size = attributes.size();
+                    size.toString();
+                    StatusBar.setText("Creation Time:" + creationTime.toString() + "  Accessed Time :" + accessedTime.toString() + "    Size:" + size + " bytes");
+                } catch (IOException ex) {
+                    Logger.getLogger(PropertiesForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
         });
-        
-    
+
     }
 
     /**
@@ -310,6 +303,7 @@ public class MainWindow extends javax.swing.JFrame {
         tablePopupMenu.add(undoMenuItem);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImages(null);
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -641,12 +635,12 @@ public class MainWindow extends javax.swing.JFrame {
      * @param evt
      */
     private void closeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeMenuItemActionPerformed
-        
+
         this.dispose();
     }//GEN-LAST:event_closeMenuItemActionPerformed
 
     private void PasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteMenuItemActionPerformed
-        
+
         PasteController pasteController = new PasteController(pasteType, copyCut.getCopyCutPath(), filePathTextField.getText());
         try {
             pasteController.paste();
@@ -663,7 +657,7 @@ public class MainWindow extends javax.swing.JFrame {
      * @param evt
      */
     private void createFolderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createFolderMenuItemActionPerformed
-        
+
         int count = 1;
         CreateFolderController newFolder = new CreateFolderController(filePathTextField.getText(), count);
         try {
@@ -678,8 +672,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_createFolderMenuItemActionPerformed
 
     private void CutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutMenuItemActionPerformed
-        
-        //TreeModelEvent l = null;
+
         CutController cutController = new CutController(filePathTextField.getText());
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "cut-paste";
@@ -700,11 +693,11 @@ public class MainWindow extends javax.swing.JFrame {
         //ChangeDirectoryController changeDir = new ChangeDirectoryController(filePathTextField.getText());
         dirNav.setChildrenPath(filePathTextField.getText());
         File currentFile = new File(filePathTextField.getText());
-        if (currentFile.exists()) {            
+        if (currentFile.exists()) {
             String parentDir = currentFile.getParent();
             filePathTextField.setText(parentDir);
         }
-        
+
         ClearTableDetailsActionListener ClearTableAddTableDetails = new ClearTableDetailsActionListener(filePathTextField, fileDetailsTable);
         ClearTableAddTableDetails.actionPerformed(evt);
     }//GEN-LAST:event_backButtonActionPerformed
@@ -726,7 +719,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowStateChanged
 
     private void createTextDocumentMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTextDocumentMenuItemActionPerformed
-        
+
         int count = 1;
         CreateFileController newFile = new CreateFileController(filePathTextField.getText(), count);
         try {
@@ -741,7 +734,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_createTextDocumentMenuItemActionPerformed
 
     private void PropertiesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PropertiesMenuItemActionPerformed
-        
+
         PropertiesForm newPropertiesForm = new PropertiesForm();
         PropertiesForm.locationTextField.setText(filePathTextField.getText().toString());
         newPropertiesForm.setVisible(true);
@@ -753,7 +746,7 @@ public class MainWindow extends javax.swing.JFrame {
      *
      */
     private void homeDirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeDirButtonActionPerformed
-        HomeDirButtonActionListener homeDirButtonListener = new HomeDirButtonActionListener(rootFileTree,filePathTextField,setFileTreeController);
+        HomeDirButtonActionListener homeDirButtonListener = new HomeDirButtonActionListener(rootFileTree, filePathTextField, setFileTreeController);
         homeDirButtonListener.actionPerformed(evt);
         // ClearTableAddTableDetails
         ClearTableDetailsActionListener ClearTableAddTableDetails = new ClearTableDetailsActionListener(filePathTextField, fileDetailsTable);
@@ -770,7 +763,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_formMouseClicked
 
     private void MenuBarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MenuBarMouseClicked
-        
+
 
     }//GEN-LAST:event_MenuBarMouseClicked
 
@@ -785,7 +778,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_filePathTextFieldActionPerformed
 
     private void filePathTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyTyped
-         
+
         // ClearTableAddTableDetails
         ClearTableDetailsActionListener ClearTableAddTableDetails = new ClearTableDetailsActionListener(filePathTextField, fileDetailsTable);
         ClearTableAddTableDetails.keyTyped(evt);
@@ -803,7 +796,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_fileDetailsTableMouseClicked
 
     private void CopyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyMenuItemActionPerformed
-        
+
         CopyController copyController = new CopyController(filePathTextField.getText());
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "copy-paste";
@@ -819,7 +812,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_CopyMenuItemActionPerformed
 
     private void DeleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteMenuItemActionPerformed
-        
+
         //TreeModelEvent l = null;
         DeleteController deleteController = new DeleteController(filePathTextField.getText());
         try {
@@ -836,8 +829,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
         File currentFile = new File(filePathTextField.getText());
-        if (currentFile.exists()) {          
-            
+        if (currentFile.exists()) {
+
             //String parentDir = currentFile.getParent();
             filePathTextField.setText(dirNav.getChildrenPath());
             dirNav.setParentsPath(dirNav.getChildrenPath());
@@ -856,7 +849,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_RefreshButtonActionPerformed
 
     private void fileDetailsTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fileDetailsTableKeyPressed
-        
+
 
     }//GEN-LAST:event_fileDetailsTableKeyPressed
 
@@ -865,7 +858,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_helpMenuItemActionPerformed
 
     private void RenameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RenameMenuItemActionPerformed
-        
+
         RenameForm newRenameForm = new RenameForm();
         RenameForm.oldPathTextField.setText(filePathTextField.getText().toString());
         newRenameForm.setVisible(true);
@@ -876,7 +869,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_RenameMenuItemActionPerformed
 
     private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
-        
+
         //TreeModelEvent l = null;
         CutController cutController = new CutController(filePathTextField.getText());
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
@@ -893,7 +886,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_cutMenuItemActionPerformed
 
     private void copyMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyMenuItemActionPerformed
-        
+
         CopyController copyController = new CopyController(filePathTextField.getText());
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "copy-paste";
@@ -909,7 +902,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_copyMenuItemActionPerformed
 
     private void pasteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteMenuItemActionPerformed
-        
+
         PasteController pasteController = new PasteController(pasteType, copyCut.getCopyCutPath(), filePathTextField.getText());
         try {
             pasteController.paste();
@@ -923,7 +916,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_pasteMenuItemActionPerformed
 
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
-        
+
         //TreeModelEvent l = null;
         DeleteController deleteController = new DeleteController(filePathTextField.getText());
         try {
@@ -938,7 +931,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private void renameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renameMenuItemActionPerformed
-        
+
         RenameForm newRenameForm = new RenameForm();
         RenameForm.oldPathTextField.setText(filePathTextField.getText().toString());
         newRenameForm.setVisible(true);
@@ -949,7 +942,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_renameMenuItemActionPerformed
 
     private void cutMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cutMenuItemMouseReleased
-        
+
         //TreeModelEvent l = null;
         CutController cutController = new CutController(filePathTextField.getText());
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
@@ -966,7 +959,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_cutMenuItemMouseReleased
 
     private void copyMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_copyMenuItemMouseReleased
-        
+
         CopyController copyController = new CopyController(filePathTextField.getText());
         copyCut.setCopyCutPath(filePathTextField.getText().toString());
         pasteType = "copy-paste";
@@ -982,7 +975,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_copyMenuItemMouseReleased
 
     private void pasteMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pasteMenuItemMouseReleased
-        
+
         PasteController pasteController = new PasteController(pasteType, copyCut.getCopyCutPath(), filePathTextField.getText());
         try {
             pasteController.paste();
@@ -996,7 +989,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_pasteMenuItemMouseReleased
 
     private void deleteMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMenuItemMouseReleased
-        
+
         //TreeModelEvent l = null;
         DeleteController deleteController = new DeleteController(filePathTextField.getText());
         try {
@@ -1015,14 +1008,14 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonMouseMoved
 
     private void propertiesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propertiesMenuItemActionPerformed
-        
+
         PropertiesForm newPropertiesForm = new PropertiesForm();
         PropertiesForm.locationTextField.setText(filePathTextField.getText().toString());
         newPropertiesForm.setVisible(true);
     }//GEN-LAST:event_propertiesMenuItemActionPerformed
 
     private void renameMenuItemMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_renameMenuItemMouseReleased
-        
+
         RenameForm newRenameForm = new RenameForm();
         RenameForm.oldPathTextField.setText(filePathTextField.getText().toString());
         newRenameForm.setVisible(true);
@@ -1039,8 +1032,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_propertiesMenuItemMouseReleased
 
     private void filePathTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filePathTextFieldKeyReleased
-      
-       
+
         // ClearTableAddTableDetails
         ClearTableDetailsActionListener ClearTableAddTableDetails = new ClearTableDetailsActionListener(filePathTextField, fileDetailsTable);
         ClearTableAddTableDetails.keyReleased(evt);
@@ -1063,26 +1055,26 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_formFocusLost
 
     private void UpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpButtonActionPerformed
-        //TODO: fix problem with up button 
+
         UpButtonActionListener newUpButtonActionListener = new UpButtonActionListener(filePathTextField);
         newUpButtonActionListener.actionPerformed(evt);
-         // ClearTableAddTableDetails
+        // ClearTableAddTableDetails
         ClearTableDetailsActionListener ClearTableAddTableDetails = new ClearTableDetailsActionListener(filePathTextField, fileDetailsTable);
         ClearTableAddTableDetails.actionPerformed(evt);
         rootFileTree.updateUI();
-        
+
     }//GEN-LAST:event_UpButtonActionPerformed
-    
-    private void StatusBar(javax.swing.JLabel evt) {        
-        
+
+    private void StatusBar(javax.swing.JLabel evt) {
+
         String string = filePathTextField.getText();
         Path path = new File(string).toPath();
         BasicFileAttributeView view = Files.getFileAttributeView(path, BasicFileAttributeView.class);
         StatusBar.setText(view.toString());
-    }    
+    }
 
     private void contentsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contentsMenuItemActionPerformed
-        
+
         OpenWebPageController openWebPage = new OpenWebPageController();
         try {
             openWebPage.openWebpage("http://files.enjin.com/51510/Beta_stuff/HelpContents.html");
@@ -1094,7 +1086,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_contentsMenuItemActionPerformed
 
     private void undoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoMenuItemActionPerformed
-        
+
         undoController.undo();
         // ClearTableAddTableDetails
         ClearTableDetailsActionListener ClearTableAddTableDetails = new ClearTableDetailsActionListener(filePathTextField, fileDetailsTable);
@@ -1107,11 +1099,11 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_filePathTextFieldInputMethodTextChanged
 
     private void filePathTextFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_filePathTextFieldPropertyChange
-        
+
     }//GEN-LAST:event_filePathTextFieldPropertyChange
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-        
+
         undoController.undo();
         ClearTableDetailsActionListener ClearTableAddTableDetails = new ClearTableDetailsActionListener(filePathTextField, fileDetailsTable);
         ClearTableAddTableDetails.actionPerformed(evt);
@@ -1119,7 +1111,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_undoButtonActionPerformed
 
     private void redoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_redoButtonActionPerformed
-        
+
         redoController.redo();
         ClearTableDetailsActionListener ClearTableAddTableDetails = new ClearTableDetailsActionListener(filePathTextField, fileDetailsTable);
         ClearTableAddTableDetails.actionPerformed(evt);
