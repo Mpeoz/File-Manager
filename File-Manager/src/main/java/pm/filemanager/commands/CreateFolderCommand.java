@@ -18,8 +18,9 @@ import pm.filemanager.operations.FileOperations;
 public class CreateFolderCommand implements ICommand {
     
     private final String source;
-    private final String temp = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
+    //private final String temp = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
     protected final int count;
+    private String filename;
 
     public CreateFolderCommand(String source, int count) {
         
@@ -30,7 +31,7 @@ public class CreateFolderCommand implements ICommand {
     @Override
     public void undo() throws IOException {
         
-        FileOperations.moveFolder(source, temp);
+        FileOperations.deleteFile(filename);
     }
 
     @Override
@@ -42,33 +43,6 @@ public class CreateFolderCommand implements ICommand {
     @Override
     public void perform() throws IOException {
         
-        CreateNewFolderOperation.createNewFolder(source, count);
-    }
-    
-    
-    
-    
-//    /**
-//     *  Function for create correctly
-//     * @param path String
-//     */
-//    public void createFolderMenuItem(String path) {
-//        
-//        CheckPathIfDirectoryController checkIfDirectory = new CheckPathIfDirectoryController();
-//        boolean ifDirectory = checkIfDirectory.checkPathIfDirectory(path);      
-//        //check if is a Directory
-//        if (ifDirectory) {
-//            //check if file and with / or not
-//            StringIfEndsWithSeparatorController newStringIfEndsWithSeparatorController = new StringIfEndsWithSeparatorController();
-//            String pathForCreateFolder = newStringIfEndsWithSeparatorController.stringIfEndsWithSeparator(path);
-//            //Create a new Folder..
-//            CreateNewFolderController createFolder = new CreateNewFolderController();
-//            createFolder.createNewFolder(pathForCreateFolder, 1);
-//            //FileUtils.c
-//
-//        } else {
-//            System.out.println("You must select directory to make a new folder");
-//        }
-//    }
-    
+        filename = CreateNewFolderOperation.createNewFolder(source, count);
+    }    
 }

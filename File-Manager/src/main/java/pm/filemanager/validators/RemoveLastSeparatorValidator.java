@@ -15,17 +15,18 @@ import java.nio.file.Paths;
 public class RemoveLastSeparatorValidator {
 
     public String getParent(String name) {
+        
         String finalName = null;
         FileSeparatorValidator looksLikeFile = new FileSeparatorValidator(name);
         String pathName = looksLikeFile.removeFileSeparator();
         Path path = Paths.get(pathName);
-        try{
-         finalName = path.getParent().toString();     
-        }catch(Exception e){
+        try {
+            finalName = path.getParent().toString();     
+        } catch(Exception e) {
             
         }
-        if(finalName==null){
-            finalName="C:\\";
+        if(finalName == null) {
+            finalName = "C:\\";
         }
         return finalName;
     }

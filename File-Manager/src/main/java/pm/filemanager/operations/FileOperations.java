@@ -62,12 +62,12 @@ public class FileOperations {
         
         File sourceFile = new File(sourceName);
         File destFile = new File(destName);
+        // TO-DO .exists() check needs to be added here
         if (sourceFile.isFile() && destFile.isDirectory()) {
             FileUtils.moveFileToDirectory(sourceFile, destFile, false);
         } else if (sourceFile.isFile()) {
             FileUtils.moveFile(sourceFile, destFile);
         } else {
-            //destFile.mkdir();
             FileUtils.moveDirectoryToDirectory(sourceFile, destFile, false);
         }
         //FileUtils.deleteQuietly(sourceFile); // ZOMG it deletes EVERYTHING!!!

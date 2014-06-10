@@ -24,7 +24,7 @@ public class CreateNewFileOperation {
      * @param countFileExist integer
      * @return true if file is created and false if is not
      */
-    public  static boolean createNewFile(String path, int countFileExist) {
+    public static String createNewFile(String path, int countFileExist) {
         
         Path xPath = Paths.get(path + "testfile" + countFileExist + ".txt");
         //boolean checkIfExistDir = false;
@@ -32,16 +32,18 @@ public class CreateNewFileOperation {
         //check if exist 
         if (checkIfExistDir) {
             countFileExist = countFileExist + 1;
-            boolean resultIfExistName = createNewFile(path, countFileExist);
+            String resultIfExistName = createNewFile(path, countFileExist);
             return resultIfExistName;
         }
         try {
             File myFile = new File(path + "testfile" + countFileExist + ".txt");
-            return myFile.createNewFile();
+            myFile.createNewFile();
+            return myFile.getName();
         } catch (IOException ioe) {
             
         }
-        return false;
+        System.out.println("The specified file path is not a valid directory!");
+        return null;
     }
 
 }

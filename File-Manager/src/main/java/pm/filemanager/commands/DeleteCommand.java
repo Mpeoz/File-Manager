@@ -8,7 +8,6 @@ package pm.filemanager.commands;
 import java.io.File;
 import java.io.IOException;
 import pm.filemanager.operations.FileOperations;
-import pm.filemanager.commands.ICommand;
 
 /**
  *
@@ -16,7 +15,7 @@ import pm.filemanager.commands.ICommand;
  */
 public class DeleteCommand implements ICommand {
 
-    private final String source, filepath, filename;
+    private final String source, filename, parentname;
     private final String temp = System.getProperty("user.dir") + File.separator + "temp" + File.separator;
 
     public DeleteCommand(String source) {
@@ -24,13 +23,17 @@ public class DeleteCommand implements ICommand {
         this.source = source;
         File myFile = new File(source);
         filename = myFile.getName();
-        filepath = myFile.getPath();
+        parentname = myFile.getParent();
     }
     
     @Override
     public void undo() throws IOException {
         
-        FileOperations.cutPasteFile(temp + filename, filepath);
+        // TO-DO fix the case where someone is trying to restore a folder under root C:\\
+//        if (parentname == null) {
+//                parentname = "C:\\";
+//        }       
+        FileOperations.cutPasteFile(temp + filename, parentname);
     }
 
     @Override

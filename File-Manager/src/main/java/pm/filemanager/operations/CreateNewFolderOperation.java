@@ -25,9 +25,8 @@ public class CreateNewFolderOperation {
      *
      * @param path String
      * @param count integer
-     * @return true if folder is created or false if is not
      */
-    public static void createNewFolder(String path, int count) {
+    public static String createNewFolder(String path, int count) {
 
             Path dPath = Paths.get(path + "NewFolder" + count);
             
@@ -39,8 +38,11 @@ public class CreateNewFolderOperation {
             }
             try {
                 Files.createDirectory(dPath);
+                String newFolderLocation = dPath.toString();
+                return newFolderLocation;
             } catch (IOException e) {
                 System.out.println("Could not create Directory");
+                return null;
         }
     }
 }
